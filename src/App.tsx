@@ -1,10 +1,20 @@
+// App.js
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/home'
+import Layout from './pages/Layout'
+
 function App() {
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 text-2xl font-bold">
-        Impact Calculator
-      </div>
-    </>
+    <BrowserRouter>
+      <>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<h1>Default</h1>} />
+            <Route path="home" element={<Home />} />
+          </Route>
+        </Routes>
+      </>
+    </BrowserRouter>
   )
 }
 
