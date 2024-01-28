@@ -12,6 +12,9 @@ function Navbar() {
           <li>
             <Link to="/category">Category</Link>
           </li>
+          <li>
+            <Link to="/projectselection">Project Selection</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />
