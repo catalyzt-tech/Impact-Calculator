@@ -5,12 +5,12 @@ function Navbar() {
   return (
     <>
       <nav>
-        <ul className="flex flex-row space-x-6 justify-center mt-6">
+        <ul className="flex flex-row space-x-6 justify-center mt-6 h-10">
           <li>
-            <Link to="/home">Home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/">Back to main</Link>
+            <Link to="/">List</Link>
           </li>
         </ul>
       </nav>
