@@ -1,7 +1,16 @@
-function Card({ projectName }: { projectName: string }) {
+interface CardProps {
+  projectName: string
+  isSelected: boolean
+}
+
+function Card({ projectName, isSelected }: CardProps) {
   return (
     <>
-      <div className="flex flex-col w-80 h-56 mx-6 my-4 px-6 py-4 border-2 border-gray-600 rounded-lg">
+      <div
+        className={`${
+          isSelected ? 'bg-gray-200' : 'bg-white'
+        } flex flex-col w-80 h-56 mx-6 my-4 px-6 py-4 border-2 border-gray-600 rounded-lg`}
+      >
         <div className="w-full mt-2">
           <img
             src="https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg"
