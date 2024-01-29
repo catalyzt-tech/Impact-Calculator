@@ -1,5 +1,7 @@
 import Card from '../components/Category/Card'
-function Category() {
+import React from 'react'
+
+const Category: React.FC = () =>{
   const categoryList: string[] = [
     'OP Stack',
     'Developer Ecosystem',

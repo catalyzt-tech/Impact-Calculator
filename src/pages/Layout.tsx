@@ -1,5 +1,6 @@
+import React from 'react'
 import Navbar from '../components/Navbar'
-function Layout() {
+const Layout: React.FC = ()=> {
   return (
     <>
       <div>

@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Card from '../components/ProjectSelection/Card'
+import React from 'react'
 
-function ProjectSelection() {
-  let [category, setCategory] = useState<any>('')
-  let [newData, setNewData] = useState<any[]>([])
-  let [selectedProject, setSelectedProject] = useState<any[]>([])
-  let [loading, setLoading] = useState<boolean>(true)
+const ProjectSelection:React.FC = () => {
+
+  const [category, setCategory] = useState<any>('')
+  const [newData, setNewData] = useState<any[]>([])
+  const [selectedProject, setSelectedProject] = useState<any[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  
   useEffect(() => {
     const loadSite = async () => {
       setCategory(localStorage.getItem('category'))
@@ -19,7 +22,7 @@ function ProjectSelection() {
     if (category !== '') {
       fetchData()
     }
-  }, [category])
+  }, [category, fetchData])
   async function fetchData() {
     const data = await fetch('/static/rpgf3.json')
     let temp = await data.json()
