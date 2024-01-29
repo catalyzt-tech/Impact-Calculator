@@ -9,7 +9,7 @@ function Card({ projectName, isSelected }: CardProps) {
       <div
         className={`${
           isSelected ? 'bg-gray-200' : 'bg-white'
-        } flex flex-col w-80 h-56 mx-6 my-4 px-6 py-4 border-2 border-gray-600 rounded-lg`}
+        } flex flex-col w-80 h-56 mx-6 my-4 px-6 py-4 border-2 border-gray-600 rounded-lg transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105`}
       >
         <div className="w-full mt-2">
           <img
