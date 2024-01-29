@@ -12,9 +12,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            {/* <Route path="home" element={<Home />} /> */}
             <Route path="category" element={<Category />} />
-            <Route path="projectselection" element={<ProjectSelection />} />
+            <Route path="category/:slug" element={<ProjectSelection />} />
             <Route path="impactcalculator" element={<ImpactCalculator />} />
           </Route>
         </Routes>

@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Card from '../components/ProjectSelection/Card'
 import React from 'react'
 
 const ProjectSelection:React.FC = () => {
+  const location = useLocation();
+  const selectedCategory: string = location.state?.category
 
-  const [category, setCategory] = useState<any>('')
+  //to work on
+  console.log(selectedCategory)
+
   const [newData, setNewData] = useState<any[]>([])
   const [selectedProject, setSelectedProject] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  
-  useEffect(() => {
-    const loadSite = async () => {
-      setCategory(localStorage.getItem('category'))
-      // await console.log(category)
-    }
-    loadSite()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  })
   useEffect(() => {
     if (category !== '') {
       fetchData()

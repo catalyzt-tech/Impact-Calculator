@@ -1,7 +1,8 @@
 import Card from '../components/Category/Card'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const Category: React.FC = () =>{
+const Category: React.FC = () => {
   const categoryList: string[] = [
     'OP Stack',
     'Developer Ecosystem',
@@ -13,9 +14,11 @@ const Category: React.FC = () =>{
       <h1 className="text-center font-bold text-3xl my-20">Category</h1>
       <div className="flex flex-col items-center justify-center">
         {categoryList.map((categoryName) => (
-          <div className="mt-6">
-            <Card categoryName={categoryName} />
-          </div>
+          <Link to={categoryName.replace(/ /g, "-").toLowerCase()} state={{ category: categoryName }}>
+            <div className="mt-6">
+              <Card categoryName={categoryName} />
+            </div>
+          </Link>
         ))}
       </div>
     </>
