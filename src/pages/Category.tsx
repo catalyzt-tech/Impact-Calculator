@@ -4,7 +4,7 @@ function Category() {
     'OP Stack',
     'Developer Ecosystem',
     'Collective Governance',
-    'End User Experience & Adoption',
+    'End User Experience and Adoption',
   ]
   return (
     <>

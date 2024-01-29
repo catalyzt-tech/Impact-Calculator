@@ -6,6 +6,9 @@ interface CardProps {
 function Card({ categoryName }: CardProps) {
   const saveCategory = () => {
     localStorage.setItem('category', categoryName)
+    if (localStorage.getItem('projectselection')) {
+      localStorage.removeItem('projectselection')
+    }
   }
   return (
     <>

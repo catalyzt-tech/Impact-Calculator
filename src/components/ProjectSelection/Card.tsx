@@ -1,9 +1,10 @@
 interface CardProps {
   projectName: string
+  projectCategory: string
   isSelected: boolean
 }
 
-function Card({ projectName, isSelected }: CardProps) {
+function Card({ projectName, projectCategory, isSelected }: CardProps) {
   return (
     <>
       <div
@@ -28,9 +29,10 @@ function Card({ projectName, isSelected }: CardProps) {
           quasi!
         </div>
         <div className="flex flex-row mt-4 text-xs">
-          <div className="bg-gray-200 px-3 py-1 rounded-xl mr-2">Tag 1</div>
-          <div className="bg-gray-200 px-3 py-1 rounded-xl mr-2">Tag 2</div>
-          <div className="bg-gray-200 px-3 py-1 rounded-xl mr-2">Tag 3</div>
+          <div className="bg-gray-200 px-3 py-1 rounded-xl mr-2">
+            {projectCategory}
+          </div>
+          <div className="bg-gray-200 px-3 py-1 rounded-xl mr-2">Tag</div>
         </div>
       </div>
     </>

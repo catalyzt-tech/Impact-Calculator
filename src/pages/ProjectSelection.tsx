@@ -3,30 +3,38 @@ import { Link } from 'react-router-dom'
 import Card from '../components/ProjectSelection/Card'
 
 function ProjectSelection() {
-  let [category, setCategory] = useState<string>('')
-  let [newData, setNewData] = useState<string[]>([])
-  let [selectedProject, setSelectedProject] = useState<string[]>([])
-
+  let [category, setCategory] = useState<any>('')
+  let [newData, setNewData] = useState<any[]>([])
+  let [selectedProject, setSelectedProject] = useState<any[]>([])
+  let [loading, setLoading] = useState<boolean>(true)
   useEffect(() => {
-    setCategory(localStorage.getItem('category'))
-    console.log(category)
+    const loadSite = async () => {
+      setCategory(localStorage.getItem('category'))
+      // await console.log(category)
+    }
+    loadSite()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    fetchData()
   })
-
+  useEffect(() => {
+    if (category !== '') {
+      fetchData()
+    }
+  }, [category])
   async function fetchData() {
-    const data = await fetch('/public/static/rpgf3.json')
+    const data = await fetch('/static/rpgf3.json')
     let temp = await data.json()
-    temp = await temp.filter((item: any) => {
-      console.log(item[`Category: ${category}`])
-      return item[`Category: ${category}`] === 1
+
+    temp = await temp.filter((project: any) => {
+      console.log(project[`Category: ${category}`])
+
+      return project[`Category: ${category}`] == 1
     })
+    await console.log(temp, `Category: ${category}`)
     await setNewData(temp)
-    console.log(newData)
+    await setLoading(false)
+    // console.log(newData)
   }
+  // fetchData()
   // const sampleProject: string[] = [
   //   'Project 1',
   //   'Project 2',
@@ -64,6 +72,15 @@ function ProjectSelection() {
   function saveProjectSelection() {
     localStorage.setItem('projectselection', JSON.stringify(selectedProject))
   }
+
+  if (loading) {
+    return (
+      <div className="flex flex-row justify-center items-center text-lg font-medium h-screen">
+        {' '}
+        Loading...
+      </div>
+    )
+  }
   return (
     <>
       <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
@@ -71,11 +88,16 @@ function ProjectSelection() {
         {newData.map((project) => (
           <div
             key={project['Project ID']}
-            onClick={() => handleProjectSelection(project)}
+            onClick={() =>
+              handleProjectSelection(project['Meta: Project Name'])
+            }
           >
             <Card
               projectName={project['Meta: Project Name']}
-              isSelected={selectedProject.includes(project)}
+              projectCategory={category}
+              isSelected={selectedProject.includes(
+                project['Meta: Project Name']
+              )}
             />
           </div>
         ))}
