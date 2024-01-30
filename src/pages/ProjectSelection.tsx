@@ -1,75 +1,43 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import Card from '../components/ProjectSelection/Card'
 import React from 'react'
 
-const ProjectSelection:React.FC = () => {
+const ProjectSelection: React.FC = () => {
+
   const location = useLocation();
   const selectedCategory: string = location.state?.category
 
   //to work on
   console.log(selectedCategory)
 
-  const [newData, setNewData] = useState<any[]>([])
   const [selectedProject, setSelectedProject] = useState<any[]>([])
+  const [newData, setNewData] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  useEffect(() => {
-    if (category !== '') {
-      fetchData()
-    }
-  }, [category, fetchData])
-  async function fetchData() {
-    const data = await fetch('/static/rpgf3.json')
-    let temp = await data.json()
-
-    temp = await temp.filter((project: any) => {
-      console.log(project[`Category: ${category}`])
-
-      return project[`Category: ${category}`] == 1
-    })
-    await console.log(temp, `Category: ${category}`)
-    await setNewData(temp)
-    await setLoading(false)
-    // console.log(newData)
-  }
-  // fetchData()
-  // const sampleProject: string[] = [
-  //   'Project 1',
-  //   'Project 2',
-  //   'Project 3',
-  //   'Project 4',
-  //   'Project 5',
-  //   'Project 6',
-  //   'Project 7',
-  //   'Project 8',
-  //   'Project 9',
-  //   'Project 10',
-  //   'Project 11',
-  //   'Project 12',
-  //   'Project 13',
-  //   'Project 14',
-  //   'Project 15',
-  //   'Project 16',
-  //   'Project 17',
-  //   'Project 18',
-  // ]
 
   useEffect(() => {
-    console.log(selectedProject)
-  }, [selectedProject])
-
-  function handleProjectSelection(projectName: string) {
-    if (selectedProject.includes(projectName) && selectedProject.length >= 1) {
-      const temp = selectedProject.filter((project) => project !== projectName)
-      setSelectedProject(temp)
-    } else {
-      setSelectedProject([...selectedProject, projectName])
+    if (selectedCategory) {
+      fetch('/static/rpgf3.json')
+        .then((res) => res.json())
+        .then((data) => {
+          const temp = data.filter((project: any) => project[`Category: ${selectedCategory}`] == 1)
+          setNewData(temp)
+          setLoading(false)
+        })
     }
-  }
+  }, [selectedCategory])
 
-  function saveProjectSelection() {
-    localStorage.setItem('projectselection', JSON.stringify(selectedProject))
-  }
+  console.log(newData)
+
+
+
+  // function handleProjectSelection(projectName: string) {
+  //   if (selectedProject.includes(projectName) && selectedProject.length >= 1) {
+  //     const temp = selectedProject.filter((project) => project !== projectName)
+  //     setSelectedProject(temp)
+  //   } else {
+  //     setSelectedProject([...selectedProject, projectName])
+  //   }
+  // }
 
   if (loading) {
     return (
@@ -82,33 +50,74 @@ const ProjectSelection:React.FC = () => {
   return (
     <>
       <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
-      <div className="flex flex-row flex-wrap items-center justify-center mx-80 ">
-        {newData.map((project) => (
-          <div
-            key={project['Project ID']}
-            onClick={() =>
-              handleProjectSelection(project['Meta: Project Name'])
-            }
-          >
-            <Card
-              projectName={project['Meta: Project Name']}
-              projectCategory={category}
-              isSelected={selectedProject.includes(
-                project['Meta: Project Name']
-              )}
-            />
-          </div>
-        ))}
+      <div className="overflow-x-auto mx-20">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Favorite Color</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {newData.map((project) => (
+              <tr>
+                <th>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <div className="mask mask-squircle w-12 h-12">
+                        <img src="https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg" alt="Avatar Tailwind CSS Component" />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-bold">{project["Meta: Project Name"]}</div>
+                      <div className="text-sm opacity-50">{project["Meta: Bio"]}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {
+                    project["Category: Collective Governance"] == 1 ? <span className="badge badge-neutral badge-sm">Collective Governance</span> : <></>
+                  }
+                  {
+                    project["Category: Developer Ecosystem"] == 1 ? <span className="badge badge-neutral badge-sm">Developer Ecosystem</span> : <></>
+                  }
+                  {
+                    project["Category: End User Experience and Adoption"] == 1 ? <span className="badge badge-neutral badge-sm">End User Experience and Adoption</span> : <></>
+                  }
+                  {
+                    project["Category: OP Stack"] == 1 ? <span className="badge badge-neutral badge-sm">OP Stack</span> : <></>
+                  }
+                </td>
+                <td>Purple</td>
+                <th>
+                  <button className="btn btn-ghost btn-xs">details</button>
+                </th>
+              </tr>
+            ))}
+            {/* foot */}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Job</th>
+              <th>Favorite Color</th>
+              <th></th>
+            </tr>
+          </tfoot>
+
+        </table>
       </div>
-      <div className="w-full text-center">
-        <Link
-          to="/impactcalculator"
-          className="px-4 py-2 bg-black text-white rounded-lg"
-          onClick={() => saveProjectSelection()}
-        >
-          Next Page
-        </Link>
-      </div>
+
     </>
   )
 }
