@@ -1,6 +1,6 @@
-import React from 'react'
+import { FC } from 'react'
 import Navbar from '../components/Navbar'
-const Layout: React.FC = ()=> {
+const Layout: FC = () => {
   return (
     <>
       <div>

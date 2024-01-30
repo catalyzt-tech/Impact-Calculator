@@ -1,7 +1,7 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+import { FC } from 'react'
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   return (
     <>
       <div className=" flex flex-col justify-center  items-center h-[calc(100vh-64px)]">

@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import React from 'react'
-
 import { Project } from '../types/project'
+import { FC } from 'react'
 
-const ProjectSelection: React.FC = () => {
-
-  const location = useLocation();
+const ProjectSelection: FC = () => {
+  const location = useLocation()
   const selectedCategory: string = location.state?.category
 
   //to work on
@@ -21,34 +19,36 @@ const ProjectSelection: React.FC = () => {
       fetch('/static/rpgf3.json')
         .then((res) => res.json())
         .then((data) => {
-          const temp = data.filter((project: Project) => project[`Category: ${selectedCategory}` as keyof Project] == 1)
+          const temp = data.filter(
+            (project: Project) =>
+              project[`Category: ${selectedCategory}` as keyof Project] == 1
+          )
           setData(temp)
           setLoading(false)
         })
     }
   }, [selectedCategory])
 
-
   const handleCheckboxChange = (project: Project) => {
-    setSelectedProject(prevState => {
+    setSelectedProject((prevState) => {
       if (prevState.includes(project)) {
-        return prevState.filter(proj => proj !== project);
+        return prevState.filter((proj) => proj !== project)
       } else {
-        return [...prevState, project];
+        return [...prevState, project]
       }
-    });
-  };
+    })
+    console.log(selectedProject)
+  }
 
   if (loading) {
     return (
       <div className="flex flex-row justify-center items-center text-lg font-medium h-screen">
-        {' '}
         Loading...
       </div>
     )
   }
   return (
-    <div className='flex flex-col items-center justify-center mx-20 mb-28'>
+    <div className="flex flex-col items-center justify-center mx-20 mb-28">
       <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
       <div className="overflow-x-auto">
         <table className="table">
@@ -67,35 +67,63 @@ const ProjectSelection: React.FC = () => {
               <tr>
                 <th>
                   <label>
-                    <input type="checkbox" className="checkbox checkbox-primary border-accent" onChange={()=> handleCheckboxChange(project)}  />
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-primary border-accent"
+                      onChange={() => handleCheckboxChange(project)}
+                    />
                   </label>
                 </th>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img src="https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg" alt="Avatar Tailwind CSS Component" />
+                        <img
+                          src="https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg"
+                          alt="Avatar Tailwind CSS Component"
+                        />
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{project["Meta: Project Name"]}</div>
-                      <div className="text-sm opacity-50">{project["Meta: Bio"]}</div>
+                      <div className="font-bold">
+                        {project['Meta: Project Name']}
+                      </div>
+                      <div className="text-sm opacity-50">
+                        {project['Meta: Bio']}
+                      </div>
                     </div>
                   </div>
                 </td>
-                <td className=''>
-                  {
-                    project["Category: Collective Governance"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">Collective Governance</span> : <></>
-                  }
-                  {
-                    project["Category: Developer Ecosystem"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">Developer Ecosystem</span> : <></>
-                  }
-                  {
-                    project["Category: End User Experience and Adoption"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">End User Experience and Adoption</span> : <></>
-                  }
-                  {
-                    project["Category: OP Stack"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">OP Stack</span> : <></>
-                  }
+                <td className="">
+                  {project['Category: Collective Governance'] == 1 ? (
+                    <span className="badge badge-neutral badge-sm ml-2">
+                      Collective Governance
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                  {project['Category: Developer Ecosystem'] == 1 ? (
+                    <span className="badge badge-neutral badge-sm ml-2">
+                      Developer Ecosystem
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                  {project['Category: End User Experience and Adoption'] ==
+                  1 ? (
+                    <span className="badge badge-neutral badge-sm ml-2">
+                      End User Experience and Adoption
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                  {project['Category: OP Stack'] == 1 ? (
+                    <span className="badge badge-neutral badge-sm ml-2">
+                      OP Stack
+                    </span>
+                  ) : (
+                    <></>
+                  )}
                 </td>
                 <td>19</td>
                 <th>
@@ -108,8 +136,10 @@ const ProjectSelection: React.FC = () => {
         </table>
       </div>
       {/* link to impact page with state "selectedProject" */}
-      <Link to='/impact' state= {{ selectedProject }} >
-        <button className='btn btn-primary btn-sm self-end mt-4'>Continue</button>
+      <Link to="/impact" state={{ selectedProject: selectedProject }}>
+        <button className="btn btn-primary btn-sm self-end mt-4">
+          Continue
+        </button>
       </Link>
     </div>
   )
