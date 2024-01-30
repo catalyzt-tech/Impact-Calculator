@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import React from 'react'
 
+import { Project } from '../types/project'
+
 const ProjectSelection: React.FC = () => {
 
   const location = useLocation();
@@ -10,8 +12,8 @@ const ProjectSelection: React.FC = () => {
   //to work on
   console.log(selectedCategory)
 
-  const [selectedProject, setSelectedProject] = useState<any[]>([])
-  const [newData, setNewData] = useState<any[]>([])
+  const [selectedProject, setSelectedProject] = useState<Project[]>([])
+  const [Data, setData] = useState<Project[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -19,25 +21,23 @@ const ProjectSelection: React.FC = () => {
       fetch('/static/rpgf3.json')
         .then((res) => res.json())
         .then((data) => {
-          const temp = data.filter((project: any) => project[`Category: ${selectedCategory}`] == 1)
-          setNewData(temp)
+          const temp = data.filter((project: Project) => project[`Category: ${selectedCategory}` as keyof Project] == 1)
+          setData(temp)
           setLoading(false)
         })
     }
   }, [selectedCategory])
 
-  console.log(newData)
 
-
-
-  // function handleProjectSelection(projectName: string) {
-  //   if (selectedProject.includes(projectName) && selectedProject.length >= 1) {
-  //     const temp = selectedProject.filter((project) => project !== projectName)
-  //     setSelectedProject(temp)
-  //   } else {
-  //     setSelectedProject([...selectedProject, projectName])
-  //   }
-  // }
+  const handleCheckboxChange = (project: Project) => {
+    setSelectedProject(prevState => {
+      if (prevState.includes(project)) {
+        return prevState.filter(proj => proj !== project);
+      } else {
+        return [...prevState, project];
+      }
+    });
+  };
 
   if (loading) {
     return (
@@ -48,9 +48,9 @@ const ProjectSelection: React.FC = () => {
     )
   }
   return (
-    <>
+    <div className='flex flex-col items-center justify-center mx-20 mb-28'>
       <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
-      <div className="overflow-x-auto mx-20">
+      <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
           <thead>
@@ -58,16 +58,16 @@ const ProjectSelection: React.FC = () => {
               <th></th>
               <th>Name</th>
               <th>Category</th>
-              <th>Favorite Color</th>
+              <th>In List</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {newData.map((project) => (
+            {Data.map((project) => (
               <tr>
                 <th>
                   <label>
-                    <input type="checkbox" className="checkbox" />
+                    <input type="checkbox" className="checkbox checkbox-primary border-accent" onChange={()=> handleCheckboxChange(project)}  />
                   </label>
                 </th>
                 <td>
@@ -83,21 +83,21 @@ const ProjectSelection: React.FC = () => {
                     </div>
                   </div>
                 </td>
-                <td>
+                <td className=''>
                   {
-                    project["Category: Collective Governance"] == 1 ? <span className="badge badge-neutral badge-sm">Collective Governance</span> : <></>
+                    project["Category: Collective Governance"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">Collective Governance</span> : <></>
                   }
                   {
-                    project["Category: Developer Ecosystem"] == 1 ? <span className="badge badge-neutral badge-sm">Developer Ecosystem</span> : <></>
+                    project["Category: Developer Ecosystem"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">Developer Ecosystem</span> : <></>
                   }
                   {
-                    project["Category: End User Experience and Adoption"] == 1 ? <span className="badge badge-neutral badge-sm">End User Experience and Adoption</span> : <></>
+                    project["Category: End User Experience and Adoption"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">End User Experience and Adoption</span> : <></>
                   }
                   {
-                    project["Category: OP Stack"] == 1 ? <span className="badge badge-neutral badge-sm">OP Stack</span> : <></>
+                    project["Category: OP Stack"] == 1 ? <span className="badge badge-neutral badge-sm ml-2">OP Stack</span> : <></>
                   }
                 </td>
-                <td>Purple</td>
+                <td>19</td>
                 <th>
                   <button className="btn btn-ghost btn-xs">details</button>
                 </th>
@@ -105,20 +105,13 @@ const ProjectSelection: React.FC = () => {
             ))}
             {/* foot */}
           </tbody>
-          <tfoot>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
-              <th></th>
-            </tr>
-          </tfoot>
-
         </table>
       </div>
-
-    </>
+      {/* link to impact page with state "selectedProject" */}
+      <Link to='/impact' state= {{ selectedProject }} >
+        <button className='btn btn-primary btn-sm self-end mt-4'>Continue</button>
+      </Link>
+    </div>
   )
 }
 

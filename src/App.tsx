@@ -14,7 +14,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="category" element={<Category />} />
             <Route path="category/:slug" element={<ProjectSelection />} />
-            <Route path="impactcalculator" element={<ImpactCalculator />} />
+            <Route path="impact" element={<ImpactCalculator />} />
           </Route>
         </Routes>
       </BrowserRouter>
