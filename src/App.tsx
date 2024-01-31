@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import Layout from './pages/Layout'
 import Category from './pages/Category'
 import ProjectSelection from './pages/ProjectSelection'
-import ImpactCalculator from './pages/ImpactCalculator'
+import ImpactCatalyst from './pages/ImpactCatalyst'
 function App() {
   return (
     <>
@@ -14,7 +14,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="category" element={<Category />} />
             <Route path="category/:slug" element={<ProjectSelection />} />
-            <Route path="impact" element={<ImpactCalculator />} />
+            <Route path="impact" element={<ImpactCatalyst />} />
           </Route>
         </Routes>
       </BrowserRouter>

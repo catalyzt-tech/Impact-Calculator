@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import ImpactMetric from '../components/ImpactCalculator/ImpactMetric'
+import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric'
 import { Project } from '../types/project'
 const ImpactCalculator: FC = () => {
   const location = useLocation()
