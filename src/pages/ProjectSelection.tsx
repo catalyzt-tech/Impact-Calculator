@@ -4,18 +4,27 @@ import { Project } from '../types/project'
 import { FC } from 'react'
 
 const ProjectSelection: FC = () => {
-  const location = useLocation()
+  const location: any = useLocation()
   const selectedCategory: string = location.state?.category
 
   //to work on
-  console.log(selectedCategory)
 
   const [selectedProject, setSelectedProject] = useState<Project[]>([])
   const [Data, setData] = useState<Project[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  let [showProject, setShowProject] = useState<number>(20)
+
+  const shuffle = (array: any[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
+    }
+    return array
+  }
 
   useEffect(() => {
     if (selectedCategory) {
+      console.log('fetching data')
       fetch('/static/rpgf3.json')
         .then((res) => res.json())
         .then((data) => {
@@ -23,7 +32,7 @@ const ProjectSelection: FC = () => {
             (project: Project) =>
               project[`Category: ${selectedCategory}` as keyof Project] == 1
           )
-          setData(temp)
+          setData(shuffle(temp))
           setLoading(false)
         })
     }
@@ -40,7 +49,11 @@ const ProjectSelection: FC = () => {
     console.log(selectedProject)
   }
 
-  if (loading) {
+  const handleSeemore = () => {
+    setShowProject(showProject + 20)
+  }
+
+  if (loading || !location.state?.category) {
     return (
       <div className="flex flex-row justify-center items-center text-lg font-medium h-screen">
         Loading...
@@ -63,7 +76,7 @@ const ProjectSelection: FC = () => {
             </tr>
           </thead>
           <tbody>
-            {Data.map((project) => (
+            {Data.slice(0, showProject).map((project) => (
               <tr>
                 <th>
                   <label>
@@ -134,10 +147,19 @@ const ProjectSelection: FC = () => {
             {/* foot */}
           </tbody>
         </table>
+        {}
+        <div className="flex flex-row justify-center">
+          <button
+            onClick={() => handleSeemore()}
+            className="btn btn-sm self-end my-4 justify-center"
+          >
+            See more
+          </button>
+        </div>
       </div>
       {/* link to impact page with state "selectedProject" */}
       <Link to="/impact" state={{ selectedProject: selectedProject }}>
-        <button className="btn btn-primary btn-sm self-end mt-4">
+        <button className="btn btn-primary  self-end mt-8 px-20">
           Continue
         </button>
       </Link>
