@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 const Navbar: React.FC = () => {
 
@@ -14,10 +15,10 @@ const Navbar: React.FC = () => {
                         <li><a>Browse</a></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-2xl text-secondary">
+                <Link to="/" className="ml-6 font-semibold text-2xl text-secondary">
                   Catalyzt
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </a>
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1 gap-x-4">
