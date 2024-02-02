@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 const Layout: FC = () => {
   return (
     <>
-      <div>
+      <div className="mx-16">
         <Navbar />
         <Outlet />
       </div>
