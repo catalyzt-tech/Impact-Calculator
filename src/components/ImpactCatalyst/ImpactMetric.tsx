@@ -1,4 +1,4 @@
-import { useState, FC } from 'react'
+import { useState, FC, ChangeEvent } from 'react'
 
 interface ImpactMetricProps {
   weightData: (weight: number[]) => void
@@ -16,17 +16,12 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
   const [weight, setWeight] = useState([20, 20, 20, 20, 20])
 
   const changeWeight = (index: number, value: number) => {
-    const total = weight.reduce((a, b) => a + b, 0)
     const newWeight = [...weight]
     newWeight[index] = value
 
-    // Check if the sum of new weights exceeds 100%
-    if (total + value - weight[index] > 100) {
-      console.error('Sum of weights cannot exceed 100%.')
-      return
-    }
+    const totalWeight = newWeight.reduce((a, b) => a + b, 0)
+
     setWeight(newWeight)
-    // Use the weightData prop to update the weights in the parent component
     weightData(newWeight)
   }
 
@@ -46,9 +41,11 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
                 placeholder="..%"
                 min={0}
                 max={100}
-                defaultValue={weight[index]}
-                onChange={(e) => changeWeight(index, Number(e.target.value))}
-                className="border-2 border-black bg-gray-200 px-4 w-20 h-8 rounded-lg ml-4"
+                value={weight[index]}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  changeWeight(index, Number(e.target.value))
+                }
+                className={`border-2 border-black bg-gray-200 px-4 w-20 h-8 rounded-lg ml-4`}
               />
               <div className="ml-4">%</div>
             </div>

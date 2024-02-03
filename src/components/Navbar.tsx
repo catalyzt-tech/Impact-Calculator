@@ -27,10 +27,10 @@ const Navbar: React.FC = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Vote</a>
+              <Link>Home</Link>
             </li>
             <li>
-              <a>Browse</a>
+              <Link>Browse</Link>
             </li>
           </ul>
         </div>
@@ -54,10 +54,10 @@ const Navbar: React.FC = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-x-4">
           <li>
-            <a>Vote</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a>Browse</a>
+            <Link to="/category">Browse</Link>
           </li>
         </ul>
       </div>
