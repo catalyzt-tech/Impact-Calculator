@@ -27,10 +27,10 @@ const Navbar: React.FC = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <Link>Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link>Browse</Link>
+              <Link to="/category">Browse</Link>
             </li>
           </ul>
         </div>
