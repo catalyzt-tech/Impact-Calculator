@@ -1,10 +1,11 @@
-import { useState, FC, ChangeEvent } from 'react'
+import {  FC, ChangeEvent } from 'react'
 
 interface ImpactMetricProps {
-  weightData: (weight: number[]) => void
+  weightData: number[]
+  weightHandler: (weight: number[]) => void
 }
 
-const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
+const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler}) => {
   const Metric = [
     'Total Contributors',
     'Total Forks',
@@ -13,16 +14,13 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
     'Funding: RPGF2',
   ]
 
-  const [weight, setWeight] = useState([20, 20, 20, 20, 20])
+  //const [totalWeightA, setTotalWeightA] = useState(100)
 
-  const changeWeight = (index: number, value: number) => {
-    const newWeight = [...weight]
+  const handleChange = (index: number, value: number) => {
+    const newWeight = [...weightData]
     newWeight[index] = value
 
-    // const totalWeight = newWeight.reduce((a, b) => a + b, 0)
-
-    setWeight(newWeight)
-    weightData(newWeight)
+    weightHandler(newWeight)
   }
 
   return (
@@ -31,7 +29,7 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
         <div className="text-center font-semibold text-xl mb-4">
           Impact Metrics
         </div>
-        <form action="" className="space-y-6">
+        <form className="space-y-6">
           {Metric.map((metric, index) => (
             <div className="flex flex-row" key={index}>
               <div>{metric}</div>
@@ -41,9 +39,9 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
                 placeholder="..%"
                 min={0}
                 max={100}
-                value={weight[index]}
+                value={weightData[index]}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  changeWeight(index, Number(e.target.value))
+                  handleChange(index, Number(e.target.value))
                 }
                 className={`border-2 border-black bg-gray-200 px-4 w-20 h-8 rounded-lg ml-4`}
               />

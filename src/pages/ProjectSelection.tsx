@@ -12,7 +12,7 @@ const ProjectSelection: FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project[]>([])
   const [Data, setData] = useState<Project[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  let [showProject, setShowProject] = useState<number>(20)
+  const [showProject, setShowProject] = useState<number>(20)
 
   const shuffle = (array: any[]) => {
     for (let i = array.length - 1; i > 0; i--) {

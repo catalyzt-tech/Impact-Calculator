@@ -25,11 +25,6 @@ const ImpactCalculator: FC = () => {
     'Funding: RPGF2': 0,
   }
 
-  const handleChangeWeight = (newWeight: number[]) => {
-    setWeight(newWeight)
-    console.log(weight)
-  }
-
   const start = async (): Promise<void> => {
     await Promise.all(
       selectedProject.map(async (project: Project) => {
@@ -52,13 +47,15 @@ const ImpactCalculator: FC = () => {
 
   if (loading) return <div>Loading...</div>
 
+  console.log(weight)
+
   return (
     <div>
       <h1 className="text-center font-bold text-3xl my-20">
         Impact Calculator
       </h1>
       <div className="flex flex-row justify-center mb-10">
-        <ImpactMetric weightData={handleChangeWeight} />
+        <ImpactMetric weightData={weight} weightHandler={setWeight}  />
 
         <div className="overflow-x-auto mx-20">
           <table className="table">
