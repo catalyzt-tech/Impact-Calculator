@@ -19,7 +19,7 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData }) => {
     const newWeight = [...weight]
     newWeight[index] = value
 
-    const totalWeight = newWeight.reduce((a, b) => a + b, 0)
+    // const totalWeight = newWeight.reduce((a, b) => a + b, 0)
 
     setWeight(newWeight)
     weightData(newWeight)
