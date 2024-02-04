@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  highcharts:
+    specifier: ^11.3.0
+    version: 11.3.0
+  highcharts-react-official:
+    specifier: ^3.2.1
+    version: 3.2.1(highcharts@11.3.0)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -1600,6 +1606,20 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /highcharts-react-official@3.2.1(highcharts@11.3.0)(react@18.2.0):
+    resolution: {integrity: sha512-hyQTX7ezCxl7JqumaWiGsroGWalzh24GedQIgO3vJbkGOZ6ySRAltIYjfxhrq4HszJOySZegotEF7v+haQ75UA==}
+    peerDependencies:
+      highcharts: '>=6.0.0'
+      react: '>=16.8.0'
+    dependencies:
+      highcharts: 11.3.0
+      react: 18.2.0
+    dev: false
+
+  /highcharts@11.3.0:
+    resolution: {integrity: sha512-Dk+Qfk/xit8KnXKPDxmcVcq48ZlcVSq7oYJR5VZlAVWnJ0BY3JFFi1GOvgSNUzlh2wzsfenihWpkAkWoag4Xqg==}
+    dev: false
 
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
