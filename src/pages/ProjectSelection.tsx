@@ -4,7 +4,7 @@ import { Project } from '../types/project'
 import { FC } from 'react'
 
 const ProjectSelection: FC = () => {
-  const location: any = useLocation()
+  const location = useLocation()
   const selectedCategory: string = location.state?.category
 
   //to work on
@@ -14,7 +14,7 @@ const ProjectSelection: FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [showProject, setShowProject] = useState<number>(20)
 
-  const shuffle = (array: any[]) => {
+  const shuffle = (array: Project[]) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[array[i], array[j]] = [array[j], array[i]]

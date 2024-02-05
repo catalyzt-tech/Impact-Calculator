@@ -20,18 +20,16 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
     
     const newWeight = [...weightData];
     newWeight[index] = value;
-    // const weightSum = newWeight.reduce((a, b) => a + b, 0)
+    const weightSum = newWeight.reduce((a, b) => a + b, 0)
 
-    // const indexOfMaxValue = newWeight.reduce((iMax, x, i, arr) => (x > arr[iMax] && i !== index) ? i : iMax, 0);
-    // const indexOfMinValue = newWeight.reduce((iMin, x, i, arr) => (x < arr[iMin] && i !== index) ? i : iMin, 4);
+    const nextIndex = index === 4 ? 0 : index + 1;
     
-    // if(weightSum > 100){
-    //   newWeight[indexOfMaxValue] -= weightSum - 100 
-    // } else {
-    //   newWeight[indexOfMinValue] += 100 - weightSum;
-    // }
+    if(weightSum > 100){
+      newWeight[nextIndex] -= weightSum - 100 
+    } else {
+      newWeight[nextIndex] += 100 - weightSum;
+    }
 
-    // weightSum > 100 ? newWeight[indexOfMaxValue] -= weightSum - 100 : newWeight[indexOfMinValue] += 100 - weightSum;
     console.log(newWeight);
     weightHandler(newWeight);
   };
