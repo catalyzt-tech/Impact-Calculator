@@ -82,7 +82,7 @@ const ProjectSelection: FC = () => {
                   <label>
                     <input
                       type="checkbox"
-                      className="checkbox checkbox-primary border-accent"
+                      className="checkbox checkbox-secondary border-accent"
                       onChange={() => handleCheckboxChange(project)}
                     />
                   </label>
@@ -109,14 +109,14 @@ const ProjectSelection: FC = () => {
                 </td>
                 <td className="">
                   {project['Category: Collective Governance'] == 1 ? (
-                    <span className="badge badge-neutral badge-sm ml-2">
+                    <span className="badge badge-ghost badge-sm ml-2">
                       Collective Governance
                     </span>
                   ) : (
                     <></>
                   )}
                   {project['Category: Developer Ecosystem'] == 1 ? (
-                    <span className="badge badge-neutral badge-sm ml-2">
+                    <span className="badge badge-ghost badge-sm ml-2">
                       Developer Ecosystem
                     </span>
                   ) : (
@@ -124,14 +124,14 @@ const ProjectSelection: FC = () => {
                   )}
                   {project['Category: End User Experience and Adoption'] ==
                   1 ? (
-                    <span className="badge badge-neutral badge-sm ml-2">
+                    <span className="badge badge-ghost badge-sm ml-2">
                       End User Experience and Adoption
                     </span>
                   ) : (
                     <></>
                   )}
                   {project['Category: OP Stack'] == 1 ? (
-                    <span className="badge badge-neutral badge-sm ml-2">
+                    <span className="badge badge-ghost badge-sm ml-2">
                       OP Stack
                     </span>
                   ) : (
@@ -159,7 +159,7 @@ const ProjectSelection: FC = () => {
       </div>
       {/* link to impact page with state "selectedProject" */}
       <Link to="/impact" state={{ selectedProject: selectedProject }}>
-        <button className="btn btn-primary  self-end mt-8 px-20">
+        <button className="btn btn-secondary  self-end mt-8 px-20">
           Continue
         </button>
       </Link>

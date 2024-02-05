@@ -4,7 +4,7 @@ interface CardProps {
 function Card({ categoryName }: CardProps) {
   return (
     <>
-      <div className="card w-96 shadow-xl">
+      <div className="card w-96 shadow-xl hover:bg-slate-100">
         <div className="card-body">
           <h2 className="card-title justify-center">{categoryName}</h2>
         </div>
