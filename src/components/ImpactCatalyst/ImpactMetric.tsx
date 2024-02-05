@@ -1,11 +1,11 @@
-import {  FC, ChangeEvent } from 'react'
+import { FC, ChangeEvent } from 'react'
 
 interface ImpactMetricProps {
   weightData: number[]
   weightHandler: (weight: number[]) => void
 }
 
-const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler}) => {
+const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
   const Metric = [
     'Total Contributors',
     'Total Forks',
@@ -17,11 +17,24 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler}) => {
   //const [totalWeightA, setTotalWeightA] = useState(100)
 
   const handleChange = (index: number, value: number) => {
-    const newWeight = [...weightData]
-    newWeight[index] = value
+    
+    const newWeight = [...weightData];
+    newWeight[index] = value;
+    // const weightSum = newWeight.reduce((a, b) => a + b, 0)
 
-    weightHandler(newWeight)
-  }
+    // const indexOfMaxValue = newWeight.reduce((iMax, x, i, arr) => (x > arr[iMax] && i !== index) ? i : iMax, 0);
+    // const indexOfMinValue = newWeight.reduce((iMin, x, i, arr) => (x < arr[iMin] && i !== index) ? i : iMin, 4);
+    
+    // if(weightSum > 100){
+    //   newWeight[indexOfMaxValue] -= weightSum - 100 
+    // } else {
+    //   newWeight[indexOfMinValue] += 100 - weightSum;
+    // }
+
+    // weightSum > 100 ? newWeight[indexOfMaxValue] -= weightSum - 100 : newWeight[indexOfMinValue] += 100 - weightSum;
+    console.log(newWeight);
+    weightHandler(newWeight);
+  };
 
   return (
     <>
@@ -35,6 +48,7 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler}) => {
               <div>{metric}</div>
               <div className="flex-grow"></div>
               <input
+                className="input input-bordered max-w-xs"
                 type="number"
                 placeholder="..%"
                 min={0}
@@ -43,7 +57,6 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler}) => {
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleChange(index, Number(e.target.value))
                 }
-                className={`border-2 border-black bg-gray-200 px-4 w-20 h-8 rounded-lg ml-4`}
               />
               <div className="ml-4">%</div>
             </div>

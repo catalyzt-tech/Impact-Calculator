@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric'
 import { Project } from '../types/project'
@@ -25,29 +25,22 @@ const ImpactCalculator: FC = () => {
     'Funding: RPGF2': 0,
   }
 
-  const start = async (): Promise<void> => {
-    await Promise.all(
-      selectedProject.map(async (project: Project) => {
-        totalStats['Total Contributors'] += Number(
-          project['OSO: Total Contributors']
-        )
-        totalStats['Total Forks'] += Number(project['OSO: Total Forks'])
-        totalStats['Total Stars'] += Number(project['OSO: Total Stars'])
-        totalStats['Funding: Governance Fund'] += Number(
-          project['Funding: Partner Fund']
-        )
-        totalStats['Funding: RPGF2'] += Number(project['Funding: RPGF2'])
-      })
-    )
-    await setLoading(false)
-    console.log(totalStats)
-  }
-
-  start()
+  useEffect(() => {
+    selectedProject.map((project: Project) => {
+      totalStats['Total Contributors'] += Number(
+        project['OSO: Total Contributors']
+      )
+      totalStats['Total Forks'] += Number(project['OSO: Total Forks'])
+      totalStats['Total Stars'] += Number(project['OSO: Total Stars'])
+      totalStats['Funding: Governance Fund'] += Number(
+        project['Funding: Partner Fund']
+      )
+      totalStats['Funding: RPGF2'] += Number(project['Funding: RPGF2'])
+    })
+    setLoading(false)
+  }, [])
 
   if (loading) return <div>Loading...</div>
-
-  console.log(weight)
 
   return (
     <div>
@@ -55,7 +48,7 @@ const ImpactCalculator: FC = () => {
         Impact Calculator
       </h1>
       <div className="flex flex-row justify-center mb-10">
-        <ImpactMetric weightData={weight} weightHandler={setWeight}  />
+        <ImpactMetric weightData={weight} weightHandler={setWeight} />
 
         <div className="overflow-x-auto mx-20">
           <table className="table">
@@ -77,31 +70,31 @@ const ImpactCalculator: FC = () => {
                     Number(
                       (project['OSO: Total Contributors'] /
                         totalStats['Total Contributors']) *
-                        weight[0]
+                      weight[0]
                     ) || 0,
                   'Total Forks':
                     Number(
                       (project['OSO: Total Forks'] /
                         totalStats['Total Forks']) *
-                        weight[1]
+                      weight[1]
                     ) || 0,
                   'Total Stars':
                     Number(
                       (project['OSO: Total Stars'] /
                         totalStats['Total Stars']) *
-                        weight[2]
+                      weight[2]
                     ) || 0,
                   'Funding: Governance Fund':
                     Number(
                       (project['Funding: Partner Fund'] /
                         totalStats['Funding: Governance Fund']) *
-                        weight[3]
+                      weight[3]
                     ) || 0,
                   'Funding: RPGF2':
                     Number(
                       (project['Funding: RPGF2'] /
                         totalStats['Funding: RPGF2']) *
-                        weight[4]
+                      weight[4]
                     ) || 0,
                 }
                 const result =
