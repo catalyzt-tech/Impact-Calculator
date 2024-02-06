@@ -80,7 +80,7 @@ const Projects: FC = () => {
           </thead>
           <tbody>
             {displayData.slice(0, Pagination).map((project) => (
-              <tr>
+              <tr key={project['Meta: Project Name']}>
                 <th>
                   <label>
                     <input

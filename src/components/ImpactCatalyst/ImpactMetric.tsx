@@ -17,22 +17,21 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
   //const [totalWeightA, setTotalWeightA] = useState(100)
 
   const handleChange = (index: number, value: number) => {
-    
-    const newWeight = [...weightData];
-    newWeight[index] = value;
+    const newWeight = [...weightData]
+    newWeight[index] = value
     const weightSum = newWeight.reduce((a, b) => a + b, 0)
 
-    const nextIndex = index === 4 ? 0 : index + 1;
-    
-    if(weightSum > 100){
-      newWeight[nextIndex] -= weightSum - 100 
+    const nextIndex = index === 4 ? 0 : index + 1
+
+    if (weightSum > 100) {
+      newWeight[nextIndex] -= weightSum - 100
     } else {
-      newWeight[nextIndex] += 100 - weightSum;
+      newWeight[nextIndex] += 100 - weightSum
     }
 
-    console.log(newWeight);
-    weightHandler(newWeight);
-  };
+    console.log(newWeight)
+    weightHandler(newWeight)
+  }
 
   return (
     <>
