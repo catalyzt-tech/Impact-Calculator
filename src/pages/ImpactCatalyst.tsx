@@ -17,16 +17,17 @@ const ImpactCalculator: FC = () => {
   const opAllocation: number = 10000000
   const [loading, setLoading] = useState(true)
   const [weight, setWeight] = useState([20, 20, 20, 20, 20])
-  const totalStats: TotalStats = {
+  const [totalStats, setTotalStats] = useState<TotalStats>({
     'Total Contributors': 0,
     'Total Forks': 0,
     'Total Stars': 0,
     'Funding: Governance Fund': 0,
     'Funding: RPGF2': 0,
-  }
+  })
 
   useEffect(() => {
     selectedProject.map((project: Project) => {
+      console.log(project)
       totalStats['Total Contributors'] += Number(
         project['OSO: Total Contributors']
       )
@@ -38,9 +39,9 @@ const ImpactCalculator: FC = () => {
       totalStats['Funding: RPGF2'] += Number(project['Funding: RPGF2'])
     })
     setLoading(false)
-  }, [])
+  }, [selectedProject, totalStats])
 
-  if (loading) return <div>Loading...</div>
+  if (loading === true) return <div>Loading...</div>
 
   return (
     <div>
@@ -67,35 +68,45 @@ const ImpactCalculator: FC = () => {
               {selectedProject.map((project: Project) => {
                 const allocation = {
                   'Total Contributors':
-                    Number(
-                      (project['OSO: Total Contributors'] /
-                        totalStats['Total Contributors']) *
-                      weight[0]
-                    ) || 0,
+                    totalStats['Total Contributors'] !== 0
+                      ? Number(
+                          (project['OSO: Total Contributors'] /
+                            totalStats['Total Contributors']) *
+                            weight[0]
+                        )
+                      : 0,
                   'Total Forks':
-                    Number(
-                      (project['OSO: Total Forks'] /
-                        totalStats['Total Forks']) *
-                      weight[1]
-                    ) || 0,
+                    totalStats['Total Forks'] !== 0
+                      ? Number(
+                          (project['OSO: Total Forks'] /
+                            totalStats['Total Forks']) *
+                            weight[1]
+                        )
+                      : 0,
                   'Total Stars':
-                    Number(
-                      (project['OSO: Total Stars'] /
-                        totalStats['Total Stars']) *
-                      weight[2]
-                    ) || 0,
+                    totalStats['Total Stars'] !== 0
+                      ? Number(
+                          (project['OSO: Total Stars'] /
+                            totalStats['Total Stars']) *
+                            weight[2]
+                        )
+                      : 0,
                   'Funding: Governance Fund':
-                    Number(
-                      (project['Funding: Partner Fund'] /
-                        totalStats['Funding: Governance Fund']) *
-                      weight[3]
-                    ) || 0,
+                    totalStats['Funding: Governance Fund'] !== 0
+                      ? Number(
+                          (project['Funding: Partner Fund'] /
+                            totalStats['Funding: Governance Fund']) *
+                            weight[3]
+                        )
+                      : 0,
                   'Funding: RPGF2':
-                    Number(
-                      (project['Funding: RPGF2'] /
-                        totalStats['Funding: RPGF2']) *
-                      weight[4]
-                    ) || 0,
+                    totalStats['Funding: RPGF2'] !== 0
+                      ? Number(
+                          (project['Funding: RPGF2'] /
+                            totalStats['Funding: RPGF2']) *
+                            weight[4]
+                        )
+                      : 0,
                 }
                 const result =
                   allocation['Total Contributors'] +
@@ -103,7 +114,6 @@ const ImpactCalculator: FC = () => {
                   allocation['Total Stars'] +
                   allocation['Funding: Governance Fund'] +
                   allocation['Funding: RPGF2']
-
                 return (
                   <tr key={project['Project ID']}>
                     {/* <th>{project['Project ID']}</th> */}
