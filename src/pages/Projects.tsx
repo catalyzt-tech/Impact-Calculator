@@ -2,37 +2,38 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Project } from '../types/project'
 import { FC } from 'react'
+import Search from '../components/Search'
 
-const ProjectSelection: FC = () => {
+const Projects: FC = () => {
   const location = useLocation()
   const selectedCategory: string = location.state?.category
 
-  //to work on
-
   const [selectedProject, setSelectedProject] = useState<Project[]>([])
-  const [Data, setData] = useState<Project[]>([])
+  const [displayData, setDisplayData] = useState<Project[]>([])
+  const [originData, setOriginData] = useState<Project[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [showProject, setShowProject] = useState<number>(20)
+  const [Pagination, setPagination] = useState<number>(20)
 
-  const shuffle = (array: Project[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[array[i], array[j]] = [array[j], array[i]]
-    }
-    return array
-  }
+  // const shuffle = (array: Project[]) => {
+  //   for (let i = array.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1))
+  //     ;[array[i], array[j]] = [array[j], array[i]]
+  //   }
+  //   return array
+  // }
 
   useEffect(() => {
     if (selectedCategory) {
-      console.log('fetching data')
+      console.log('fetching displayData')
       fetch('/static/rpgf3.json')
         .then((res) => res.json())
-        .then((data) => {
-          const temp = data.filter(
+        .then((d) => {
+          const temp = d.filter(
             (project: Project) =>
               project[`Category: ${selectedCategory}` as keyof Project] == 1
           )
-          setData(shuffle(temp))
+          setDisplayData(temp)
+          setOriginData(temp)
           setLoading(false)
         })
     }
@@ -50,7 +51,7 @@ const ProjectSelection: FC = () => {
   }
 
   const handleSeemore = () => {
-    setShowProject(showProject + 20)
+    setPagination(Pagination + 20)
   }
 
   if (loading || !location.state?.category) {
@@ -60,8 +61,10 @@ const ProjectSelection: FC = () => {
       </div>
     )
   }
+
   return (
     <div className="flex flex-col items-center justify-center mx-20 mb-28">
+      <Search originData={originData} setData={setDisplayData} />
       <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
       <div className="overflow-x-auto">
         <table className="table">
@@ -76,7 +79,7 @@ const ProjectSelection: FC = () => {
             </tr>
           </thead>
           <tbody>
-            {Data.slice(0, showProject).map((project) => (
+            {displayData.slice(0, Pagination).map((project) => (
               <tr>
                 <th>
                   <label>
@@ -167,4 +170,4 @@ const ProjectSelection: FC = () => {
   )
 }
 
-export default ProjectSelection
+export default Projects
