@@ -142,7 +142,10 @@ const ImpactCalculator: FC = () => {
                     <td>{project['Funding: RPGF2']}</td>
                     <td className="flex flex-row border-l">
                       <div>
-                        {((result * opAllocation) / 100).toLocaleString()}
+                        {new Intl.NumberFormat('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(Number((result * opAllocation) / 100))}
                       </div>
                       <div className="flex flex-row justify-end ml-2">
                         <svg
