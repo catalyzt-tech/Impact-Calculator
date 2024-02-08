@@ -15,78 +15,77 @@ const TempGraph = ({
     downloadArr,
 }
 :{
-    staredArr:SeriesGraphType
-    forkedArr:SeriesGraphType
-    downloadArr:SeriesGraphType
+    staredArr:SeriesGraphType[]
+    forkedArr:SeriesGraphType[]
+    downloadArr:SeriesGraphType[]
 }) => {
-  const metrics = ['Download', 'Total Forks', 'Total Stars']
+  const metrics = ['Pull Request Closed', 'Total Forks', 'Total Stars']
 
   const [currentMetric, setCurrentMetric] = useState<string>('Download')
   const [options, setOptions] = useState<Highcharts.Options>({})
-  const [mockData, setMockData] = useState<SeriesGraphType>(downloadArr)
+  const [mockData, setMockData] = useState<SeriesGraphType[]>(downloadArr)
 
 //   console.log(currentMetric)
 // console.log(mockData)
   useEffect(() => {
-    setOptions(prev => {
-        return {
-            chart: {
-              type: 'area',
-              height: 450,
-            },
-            title: {
-              text: 'Impact Calculator',
-              align: 'center',
-            },
-            legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              x: 0,
-              y: 0,
-              floating: false,
-              borderWidth: 1,
-              backgroundColor: '#FFFFFF',
-            },
-            xAxis: {
-              title: {
-                text: 'Month',
-              },
-            },
-            yAxis: {
-              title: {
-                text: `${currentMetric}`,
-              },
-            },
-            tooltip: {
-              shared: true,
-              valueSuffix: '',
-              headerFormat: '<b>Month {point.x}</b><br>',
-            },
-            credits: {
-              enabled: false,
-            },
-            plotOptions: {
-              series: {
-                pointStart: 1,
-              },
-              areaspline: {
-                fillOpacity: 0.03,
-              },
-            },
-            series: mockData
-          }
+    setOptions({
+      chart: {
+        type: 'area',
+        height: 450,
+      },
+      title: {
+        text: '',
+        align: 'center',
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        x: 0,
+        y: 0,
+        floating: false,
+        borderWidth: 1,
+        backgroundColor: '#FFFFFF',
+      },
+      xAxis: {
+        title: {
+          text: 'Month',
+        },
+      },
+      yAxis: {
+        title: {
+          text: `${currentMetric}`,
+        },
+      },
+      tooltip: {
+        shared: true,
+        valueSuffix: '',
+        headerFormat: '<b>Month {point.x}</b><br>',
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          pointStart: 1,
+        },
+        areaspline: {
+          fillOpacity: 0.03,
+        },
+      },
+      series: mockData
     })
   }, [mockData, currentMetric])
 
 
-  console.log(staredArr)
-  console.log(forkedArr)
-  console.log(downloadArr)
+//   console.log(staredArr)
+//   console.log(forkedArr)
+//   console.log(downloadArr)
 
   const selectMetric = (metric:string) => {
     
-    if(metric === "Download"){
+    setCurrentMetric(metric)
+    if(metric === "Pull Request Closed"){
         setMockData(downloadArr)
     }
     if(metric === "Total Forks") {
@@ -95,8 +94,7 @@ const TempGraph = ({
     if(metric === "Total Stars"){
         setMockData(staredArr)
     }
-    console.log(mockData)
-    setCurrentMetric(metric)
+    // console.log(mockData)
   }
 
   return (

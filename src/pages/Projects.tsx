@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Project } from '../types/project'
-import { FC } from 'react'
 import Search from '../components/Search'
+import { Project } from '../types/project'
 
 const Projects: FC = () => {
   const location = useLocation()
@@ -64,8 +63,9 @@ const Projects: FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mx-20 mb-28">
+     
+      <h1 className="text-center font-bold text-3xl mt-10">Projects</h1>
       <Search originData={originData} setData={setDisplayData} />
-      <h1 className="text-center font-bold text-3xl my-20">Projects</h1>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}

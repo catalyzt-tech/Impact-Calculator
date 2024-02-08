@@ -18,7 +18,7 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
 
   return (
     <>
-      <div className="relative flex items-center">
+      <div className="relative flex items-center my-20 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -36,7 +36,7 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
         <input
           type="text"
           placeholder="Search here"
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-[15rem] md:w-[25rem]"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleSearch(e.target.value)
           }
