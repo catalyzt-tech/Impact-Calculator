@@ -1,6 +1,6 @@
-import { FC, useState, useEffect, MouseEvent } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { FC, MouseEvent, useEffect, useState } from 'react'
 
 interface ProjectData {
   'Total Contributors': number[]
@@ -39,8 +39,7 @@ const TempGraph: FC = () => {
     })
   )
 
-  const [currentMetric, setCurrentMetric] =
-    useState<string>('Total Contributors')
+  const [currentMetric, setCurrentMetric] = useState<string>('Total Contributors')
   const [options, setOptions] = useState<Highcharts.Options>({})
   const [mockData, setMockData] = useState<any[]>(
     mockDataSets.map((data, index) => ({
@@ -48,6 +47,8 @@ const TempGraph: FC = () => {
       data: shuffle(data[currentMetric]),
     }))
   )
+
+    console.log(mockDataSets)
 
   useEffect(() => {
     setOptions({
@@ -109,12 +110,13 @@ const TempGraph: FC = () => {
     setCurrentMetric(newMetric)
     setMockData(newMockData)
   }
-
+  console.log(mockData)
   return (
     <div>
       <div className="mx-40">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
+
       <div className="text-center mt-4 mb-12"></div>
       <div className="flex flex-row justify-center space-x-10 mt-4">
         {metrics.map((metric, index) => (

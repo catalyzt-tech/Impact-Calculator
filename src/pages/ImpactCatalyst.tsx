@@ -1,7 +1,11 @@
-import { FC, useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric'
-import { Project } from '../types/project'
+import { gql } from '@apollo/client';
+import { FC, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import TempGraph from '../components/Graph';
+import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric';
+import { client } from '../main';
+import { EventMonthProject, GetMonthlyType, QueryGetProjectId, SeriesGraphType } from '../types/impactCata';
+import { Project } from '../types/project';
 
 interface TotalStats {
   'Total Contributors': number
@@ -24,6 +28,10 @@ const ImpactCalculator: FC = () => {
     'Funding: Governance Fund': 0,
     'Funding: RPGF2': 0,
   })
+
+  const [star, setStar] = useState<SeriesGraphType[]>([])
+  const [fork, setFork] = useState<SeriesGraphType[]>([])
+  const [download, setDownLoad] = useState<SeriesGraphType[]>([])
 
   useEffect(() => {
     const updatedStats = selectedProject.reduce(
@@ -52,15 +60,149 @@ const ImpactCalculator: FC = () => {
     )
     setTotalStats(updatedStats)
     setLoading(false)
-  }, [selectedProject])
+
+
+    handleGetProjectId()
+
+
+  }, [])
 
   if (loading === true) return <div>Loading...</div>
+
+  function handleGetProjectId() {
+
+
+    if (selectedProject.length !== 0) {
+
+
+      selectedProject.forEach((item) => {
+        // console.log(item["Meta: Project Name"]);
+
+        // get projectId
+        const GET_PROJECT_ID = gql`
+        query nameToID {
+          project(where: { name: { _eq: "${item["Meta: Project Name"]}" } }) {
+            id
+            name
+            description
+          }
+        }
+        `
+
+        // get projectId
+        client.query({
+          query: GET_PROJECT_ID
+        }).then((result: QueryGetProjectId) => {
+          const projectId = result?.data?.project[0]?.id
+          const typeId = result?.data?.project[0]?.__typename
+
+
+          if (projectId && typeId) {
+            const GET_MONTHLY = gql`
+              query idToMonthlyEvent {
+                events_monthly_to_project(where:{projectId:{_eq:${projectId}}}){
+                  typeId
+                  bucketMonthly
+                  amount
+                }
+              }
+            `
+            client.query({
+              query: GET_MONTHLY,
+
+            }).then((res: GetMonthlyType) => {
+              let forkedArr:EventMonthProject[] = []
+              let staredArr:EventMonthProject[] = []
+              let downloadArr:EventMonthProject[] = []
+
+              res.data.events_monthly_to_project.forEach(elem => {
+                // 21 = star
+                // 23 = forked
+                if(elem.typeId === 21){
+                  staredArr.push(elem)
+                }
+                else if(elem.typeId === 23){
+                  forkedArr.push(elem)
+                }
+                else if(elem.typeId === 13){
+                  downloadArr.push(elem)
+                }
+              }); 
+              staredArr = staredArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
+              forkedArr = forkedArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
+              downloadArr = downloadArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
+              
+              // star
+              //@ts-ignore
+              let objStar:SeriesGraphType = {}
+              objStar.name = result?.data?.project[0].name
+              
+              let tempStarArr:number[] = []
+              staredArr.forEach(starItem => {
+                tempStarArr.push(starItem.amount)
+              });
+              // star
+              
+              // forked
+              //@ts-ignore
+              let objforked:SeriesGraphType = {}
+              objforked.name = result?.data?.project[0].name
+              
+              let tempforkedArr:number[] = []
+              forkedArr.forEach(forkedItem => {
+                tempforkedArr.push(forkedItem.amount)
+              });
+              // forked
+              
+              // download
+              //@ts-ignore
+              let objdownload:SeriesGraphType = {}
+              objdownload.name = result?.data?.project[0].name
+              
+              let tempdownloadArr:number[] = []
+              downloadArr.forEach(downloadItem => {
+                tempdownloadArr.push(downloadItem.amount)
+              });
+              // download
+              
+              objdownload.data = tempdownloadArr
+              objforked.data = tempforkedArr
+              objStar.data = tempStarArr
+
+              setStar(prev => [...prev, objStar])
+              setFork(prev => [...prev, objforked])
+              setDownLoad(prev => [...prev, objdownload])
+              
+
+            })
+          }
+        });
+
+
+      });
+    }
+  }
+
+  console.log(download)
+  console.log(star)
+  console.log(fork)
+
 
   return (
     <div>
       <h1 className="text-center font-bold text-3xl my-20">
         Impact Calculator
       </h1>
+        {download.length !== 0 && star.length !== 0 && fork.length !== 0 ?
+      <TempGraph
+      downloadArr={download}
+      staredArr={star}
+      forkedArr={fork}
+      
+      />
+      :
+      <h6>Loading</h6>  
+      }
       <div className="flex flex-row justify-center mb-10">
         <ImpactMetric weightData={weight} weightHandler={setWeight} />
 
@@ -83,42 +225,42 @@ const ImpactCalculator: FC = () => {
                   'Total Contributors':
                     totalStats['Total Contributors'] !== 0
                       ? Number(
-                          (project['OSO: Total Contributors'] /
-                            totalStats['Total Contributors']) *
-                            weight[0]
-                        )
+                        (project['OSO: Total Contributors'] /
+                          totalStats['Total Contributors']) *
+                        weight[0]
+                      )
                       : 0,
                   'Total Forks':
                     totalStats['Total Forks'] !== 0
                       ? Number(
-                          (project['OSO: Total Forks'] /
-                            totalStats['Total Forks']) *
-                            weight[1]
-                        )
+                        (project['OSO: Total Forks'] /
+                          totalStats['Total Forks']) *
+                        weight[1]
+                      )
                       : 0,
                   'Total Stars':
                     totalStats['Total Stars'] !== 0
                       ? Number(
-                          (project['OSO: Total Stars'] /
-                            totalStats['Total Stars']) *
-                            weight[2]
-                        )
+                        (project['OSO: Total Stars'] /
+                          totalStats['Total Stars']) *
+                        weight[2]
+                      )
                       : 0,
                   'Funding: Governance Fund':
                     totalStats['Funding: Governance Fund'] !== 0
                       ? Number(
-                          (project['Funding: Partner Fund'] /
-                            totalStats['Funding: Governance Fund']) *
-                            weight[3]
-                        )
+                        (project['Funding: Partner Fund'] /
+                          totalStats['Funding: Governance Fund']) *
+                        weight[3]
+                      )
                       : 0,
                   'Funding: RPGF2':
                     totalStats['Funding: RPGF2'] !== 0
                       ? Number(
-                          (project['Funding: RPGF2'] /
-                            totalStats['Funding: RPGF2']) *
-                            weight[4]
-                        )
+                        (project['Funding: RPGF2'] /
+                          totalStats['Funding: RPGF2']) *
+                        weight[4]
+                      )
                       : 0,
                 }
                 const result =
@@ -128,7 +270,7 @@ const ImpactCalculator: FC = () => {
                   allocation['Funding: Governance Fund'] +
                   allocation['Funding: RPGF2']
 
-                console.log(weight, allocation, result, opAllocation)
+                // console.log(weight, allocation, result, opAllocation)
                 return (
                   <tr key={project['Project ID']}>
                     {/* <th>{project['Project ID']}</th> */}
