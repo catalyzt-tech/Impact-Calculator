@@ -3,30 +3,19 @@ import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useState } from 'react'
 import { SeriesGraphType } from '../types/impactCata'
 
-interface ProjectData {
-  'Download': number[]
-  'Total Forks': number[]
-  'Total Stars': number[]
+interface TempGraphProps {
+  staredArr: SeriesGraphType[]
+  forkedArr: SeriesGraphType[]
+  downloadArr: SeriesGraphType[]
 }
-
-const TempGraph = ({
-    staredArr,
-    forkedArr,
-    downloadArr,
-}
-:{
-    staredArr:SeriesGraphType[]
-    forkedArr:SeriesGraphType[]
-    downloadArr:SeriesGraphType[]
-}) => {
+const TempGraph = ({ staredArr, forkedArr, downloadArr }: TempGraphProps) => {
   const metrics = ['Pull Request Closed', 'Total Forks', 'Total Stars']
-
   const [currentMetric, setCurrentMetric] = useState<string>('Download')
   const [options, setOptions] = useState<Highcharts.Options>({})
   const [mockData, setMockData] = useState<SeriesGraphType[]>(downloadArr)
 
-//   console.log(currentMetric)
-// console.log(mockData)
+  //   console.log(currentMetric)
+  // console.log(mockData)
   useEffect(() => {
     setOptions({
       chart: {
@@ -73,26 +62,25 @@ const TempGraph = ({
           fillOpacity: 0.03,
         },
       },
-      series: mockData
+      series: mockData,
     })
   }, [mockData, currentMetric])
 
+  //   console.log(staredArr)
+  //   console.log(forkedArr)
+  //   console.log(downloadArr)
 
-//   console.log(staredArr)
-//   console.log(forkedArr)
-//   console.log(downloadArr)
-
-  const selectMetric = (metric:string) => {
-    
-    setCurrentMetric(metric)
-    if(metric === "Pull Request Closed"){
-        setMockData(downloadArr)
+  const selectMetric = async (metric: string) => {
+    await setCurrentMetric(metric)
+    console.log(metric)
+    if (metric === 'Pull Request Closed') {
+      await setMockData(downloadArr)
     }
-    if(metric === "Total Forks") {
-        setMockData(forkedArr)
+    if (metric === 'Total Forks') {
+      await setMockData(forkedArr)
     }
-    if(metric === "Total Stars"){
-        setMockData(staredArr)
+    if (metric === 'Total Stars') {
+      await setMockData(staredArr)
     }
     // console.log(mockData)
   }

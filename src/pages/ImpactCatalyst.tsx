@@ -1,11 +1,16 @@
-import { gql } from '@apollo/client';
-import { FC, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import TempGraph from '../components/Graph';
-import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric';
-import { client } from '../main';
-import { EventMonthProject, GetMonthlyType, QueryGetProjectId, SeriesGraphType } from '../types/impactCata';
-import { Project } from '../types/project';
+import { gql } from '@apollo/client'
+import { FC, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import TempGraph from '../components/Graph'
+import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric'
+import { client } from '../main'
+import {
+  EventMonthProject,
+  GetMonthlyType,
+  QueryGetProjectId,
+  SeriesGraphType,
+} from '../types/impactCata'
+import { Project } from '../types/project'
 
 interface TotalStats {
   'Total Contributors': number
@@ -61,27 +66,20 @@ const ImpactCalculator: FC = () => {
     setTotalStats(updatedStats)
     setLoading(false)
 
-
     handleGetProjectId()
-
-
   }, [])
 
   if (loading === true) return <div>Loading...</div>
 
   function handleGetProjectId() {
-
-
     if (selectedProject.length !== 0) {
-
-
       selectedProject.forEach((item) => {
         // console.log(item["Meta: Project Name"]);
 
         // get projectId
         const GET_PROJECT_ID = gql`
         query nameToID {
-          project(where: { name: { _eq: "${item["Meta: Project Name"]}" } }) {
+          project(where: { name: { _eq: "${item['Meta: Project Name']}" } }) {
             id
             name
             description
@@ -90,15 +88,16 @@ const ImpactCalculator: FC = () => {
         `
 
         // get projectId
-        client.query({
-          query: GET_PROJECT_ID
-        }).then((result: QueryGetProjectId) => {
-          const projectId = result?.data?.project[0]?.id
-          const typeId = result?.data?.project[0]?.__typename
+        client
+          .query({
+            query: GET_PROJECT_ID,
+          })
+          .then((result: QueryGetProjectId) => {
+            const projectId = result?.data?.project[0]?.id
+            const typeId = result?.data?.project[0]?.__typename
 
-
-          if (projectId && typeId) {
-            const GET_MONTHLY = gql`
+            if (projectId && typeId) {
+              const GET_MONTHLY = gql`
               query idToMonthlyEvent {
                 events_monthly_to_project(where:{projectId:{_eq:${projectId}}}){
                   typeId
@@ -107,78 +106,95 @@ const ImpactCalculator: FC = () => {
                 }
               }
             `
-            client.query({
-              query: GET_MONTHLY,
+              client
+                .query({
+                  query: GET_MONTHLY,
+                })
+                .then((res: GetMonthlyType) => {
+                  let forkedArr: EventMonthProject[] = []
+                  let staredArr: EventMonthProject[] = []
+                  let downloadArr: EventMonthProject[] = []
 
-            }).then((res: GetMonthlyType) => {
-              let forkedArr:EventMonthProject[] = []
-              let staredArr:EventMonthProject[] = []
-              let downloadArr:EventMonthProject[] = []
+                  res.data.events_monthly_to_project.forEach((elem) => {
+                    // 21 = star
+                    // 23 = forked
+                    if (elem.typeId === 21) {
+                      staredArr.push(elem)
+                    } else if (elem.typeId === 23) {
+                      forkedArr.push(elem)
+                    } else if (elem.typeId === 13) {
+                      downloadArr.push(elem)
+                    }
+                  })
+                  staredArr = staredArr
+                    .sort(
+                      (a, b) =>
+                        new Date(a.bucketMonthly) - new Date(b.bucketMonthly)
+                    )
+                    .filter(
+                      (e) => new Date(e.bucketMonthly).getFullYear() == 2023
+                    )
+                  forkedArr = forkedArr
+                    .sort(
+                      (a, b) =>
+                        new Date(a.bucketMonthly) - new Date(b.bucketMonthly)
+                    )
+                    .filter(
+                      (e) => new Date(e.bucketMonthly).getFullYear() == 2023
+                    )
+                  downloadArr = downloadArr
+                    .sort(
+                      (a, b) =>
+                        new Date(a.bucketMonthly) - new Date(b.bucketMonthly)
+                    )
+                    .filter(
+                      (e) => new Date(e.bucketMonthly).getFullYear() == 2023
+                    )
 
-              res.data.events_monthly_to_project.forEach(elem => {
-                // 21 = star
-                // 23 = forked
-                if(elem.typeId === 21){
-                  staredArr.push(elem)
-                }
-                else if(elem.typeId === 23){
-                  forkedArr.push(elem)
-                }
-                else if(elem.typeId === 13){
-                  downloadArr.push(elem)
-                }
-              }); 
-              staredArr = staredArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
-              forkedArr = forkedArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
-              downloadArr = downloadArr.sort((a, b) => new Date(a.bucketMonthly) - new Date(b.bucketMonthly)).filter((e) => new Date(e.bucketMonthly).getFullYear() == 2023)
-              
-              // star
-              //@ts-ignore
-              let objStar:SeriesGraphType = {}
-              objStar.name = result?.data?.project[0].name
-              
-              let tempStarArr:number[] = []
-              staredArr.forEach(starItem => {
-                tempStarArr.push(starItem.amount)
-              });
-              // star
-              
-              // forked
-              //@ts-ignore
-              let objforked:SeriesGraphType = {}
-              objforked.name = result?.data?.project[0].name
-              
-              let tempforkedArr:number[] = []
-              forkedArr.forEach(forkedItem => {
-                tempforkedArr.push(forkedItem.amount)
-              });
-              // forked
-              
-              // download
-              //@ts-ignore
-              let objdownload:SeriesGraphType = {}
-              objdownload.name = result?.data?.project[0].name
-              
-              let tempdownloadArr:number[] = []
-              downloadArr.forEach(downloadItem => {
-                tempdownloadArr.push(downloadItem.amount)
-              });
-              // download
-              
-              objdownload.data = tempdownloadArr
-              objforked.data = tempforkedArr
-              objStar.data = tempStarArr
+                  // star
+                  //@ts-ignore
+                  let objStar: SeriesGraphType = {}
+                  objStar.name = result?.data?.project[0].name
 
-              setStar(prev => [...prev, objStar])
-              setFork(prev => [...prev, objforked])
-              setDownLoad(prev => [...prev, objdownload])
-              
+                  let tempStarArr: number[] = []
+                  staredArr.forEach((starItem) => {
+                    tempStarArr.push(starItem.amount)
+                  })
+                  // star
 
-            })
-          }
-        });
+                  // forked
+                  //@ts-ignore
+                  let objforked: SeriesGraphType = {}
+                  objforked.name = result?.data?.project[0].name
 
-      });
+                  let tempforkedArr: number[] = []
+                  forkedArr.forEach((forkedItem) => {
+                    tempforkedArr.push(forkedItem.amount)
+                  })
+                  // forked
+
+                  // download
+                  //@ts-ignore
+                  let objdownload: SeriesGraphType = {}
+                  objdownload.name = result?.data?.project[0].name
+
+                  let tempdownloadArr: number[] = []
+                  downloadArr.forEach((downloadItem) => {
+                    tempdownloadArr.push(downloadItem.amount)
+                  })
+                  // download
+
+                  objdownload.data = tempdownloadArr
+                  objforked.data = tempforkedArr
+                  objStar.data = tempStarArr
+
+                  setStar((prev) => [...prev, objStar])
+                  setFork((prev) => [...prev, objforked])
+                  setDownLoad((prev) => [...prev, objdownload])
+                })
+            }
+          })
+      })
     }
   }
 
@@ -186,34 +202,38 @@ const ImpactCalculator: FC = () => {
   // console.log(star)
   // console.log(fork)
 
-
   return (
     <div>
       <h1 className="text-center font-bold text-3xl my-20">
         Impact Calculator
       </h1>
-        {download.length !== 0 && star.length !== 0 && fork.length !== 0 ?
-      <div className="mb-8">
-          <TempGraph
-        downloadArr={download}
-        staredArr={star}
-        forkedArr={fork}
-        
-        />
-     </div>
-      :
-      <div className="flex justify-center my-16">
-
-      <div role="status">
-          <svg aria-hidden="true" className="text-center w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-secondary" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-          </svg>
-          <span className="sr-only">Loading...</span>
-      </div>
-
-      </div>
-      }
+      {download.length !== 0 && star.length !== 0 && fork.length !== 0 ? (
+        <div className="mb-8">
+          <TempGraph downloadArr={download} staredArr={star} forkedArr={fork} />
+        </div>
+      ) : (
+        <div className="flex justify-center my-16">
+          <div role="status">
+            <svg
+              aria-hidden="true"
+              className="text-center w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-secondary"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
       <div className="flex flex-row justify-center mb-10">
         <ImpactMetric weightData={weight} weightHandler={setWeight} />
 
@@ -236,42 +256,42 @@ const ImpactCalculator: FC = () => {
                   'Total Contributors':
                     totalStats['Total Contributors'] !== 0
                       ? Number(
-                        (project['OSO: Total Contributors'] /
-                          totalStats['Total Contributors']) *
-                        weight[0]
-                      )
+                          (project['OSO: Total Contributors'] /
+                            totalStats['Total Contributors']) *
+                            weight[0]
+                        )
                       : 0,
                   'Total Forks':
                     totalStats['Total Forks'] !== 0
                       ? Number(
-                        (project['OSO: Total Forks'] /
-                          totalStats['Total Forks']) *
-                        weight[1]
-                      )
+                          (project['OSO: Total Forks'] /
+                            totalStats['Total Forks']) *
+                            weight[1]
+                        )
                       : 0,
                   'Total Stars':
                     totalStats['Total Stars'] !== 0
                       ? Number(
-                        (project['OSO: Total Stars'] /
-                          totalStats['Total Stars']) *
-                        weight[2]
-                      )
+                          (project['OSO: Total Stars'] /
+                            totalStats['Total Stars']) *
+                            weight[2]
+                        )
                       : 0,
                   'Funding: Governance Fund':
                     totalStats['Funding: Governance Fund'] !== 0
                       ? Number(
-                        (project['Funding: Partner Fund'] /
-                          totalStats['Funding: Governance Fund']) *
-                        weight[3]
-                      )
+                          (project['Funding: Partner Fund'] /
+                            totalStats['Funding: Governance Fund']) *
+                            weight[3]
+                        )
                       : 0,
                   'Funding: RPGF2':
                     totalStats['Funding: RPGF2'] !== 0
                       ? Number(
-                        (project['Funding: RPGF2'] /
-                          totalStats['Funding: RPGF2']) *
-                        weight[4]
-                      )
+                          (project['Funding: RPGF2'] /
+                            totalStats['Funding: RPGF2']) *
+                            weight[4]
+                        )
                       : 0,
                 }
                 const result =

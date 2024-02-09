@@ -13,8 +13,9 @@ const Category: FC = () => {
     <>
       <h1 className="text-center font-bold text-3xl my-20">Category</h1>
       <div className="flex flex-col items-center justify-center">
-        {categoryList.map((categoryName) => (
+        {categoryList.map((categoryName, index) => (
           <Link
+            key={index}
             to={categoryName.replace(/ /g, '-').toLowerCase()}
             state={{ category: categoryName }}
           >
