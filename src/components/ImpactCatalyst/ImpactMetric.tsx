@@ -35,7 +35,7 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
 
   return (
     <>
-      <div className=" pb-8 px-8 ">
+      <div className=" pb-8 px-8 w-fit">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
         </div>

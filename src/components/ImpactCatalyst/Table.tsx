@@ -9,7 +9,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
   return (
     <>
       <div className="flex flex-row  justify-center">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto  w-full">
           <table className="table">
             <thead>
               <tr className="text-sm text-black bg-slate-100">

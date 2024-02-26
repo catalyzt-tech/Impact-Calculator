@@ -228,7 +228,7 @@ const ImpactCalculator: FC = () => {
         <div className="col-span-2 border pt-10">
           <TempGraph downloadArr={download} staredArr={star} forkedArr={fork} />
         </div>
-        <div className="flex flex-col justify-center border ">
+        <div className="flex flex-col justify-center items-center border ">
           <ImpactMetric weightData={weight} weightHandler={setWeight} />
         </div>
         <div className="col-span-2 border">
