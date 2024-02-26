@@ -14,7 +14,7 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
     'Funding: RPGF2',
   ]
 
-  //const [totalWeightA, setTotalWeightA] = useState(100)
+  //const [totalWeightA, setTotalWeightA]   = useState(100)
 
   const handleChange = (index: number, value: number) => {
     const newWeight = [...weightData]
@@ -35,17 +35,23 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
 
   return (
     <>
-      <div className="border-2 border-black w-96 py-8 px-8 rounded-lg">
-        <div className="text-center font-semibold text-xl mb-4">
+      <div className=" pb-8 px-8 ">
+        <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
         </div>
-        <form className="space-y-6">
+        <div className="flex flex-row pb-3 mb-5 border-b border-slate-300 text-sm font-bold">
+          <div>Impact Vector</div>
+          <div className="flex-grow"></div>
+          <div className="">Weight </div>
+          <div className="mr-8"></div>
+        </div>
+        <form className="space-y-4">
           {Metric.map((metric, index) => (
             <div className="flex flex-row" key={index}>
-              <div>{metric}</div>
+              <div className="text-sm">{metric}</div>
               <div className="flex-grow"></div>
               <input
-                className="input input-bordered max-w-xs"
+                className="border px-2 py-1 rounded-md w-20 text-center  "
                 type="number"
                 placeholder="..%"
                 min={0}
@@ -59,6 +65,11 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
             </div>
           ))}
         </form>
+      </div>
+      <div className="text-center">
+        <button className="bg-[#ff0000] px-6 py-2 rounded-lg text-sm font-semibold border border-white text-white">
+          Select Metric Vectors
+        </button>
       </div>
     </>
   )

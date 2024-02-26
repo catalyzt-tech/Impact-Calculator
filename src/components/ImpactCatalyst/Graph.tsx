@@ -1,21 +1,33 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useState } from 'react'
-import { SeriesGraphType } from '../types/impactCata'
+import { SeriesGraphType } from '../../types/impactCata'
 
 interface TempGraphProps {
   staredArr: SeriesGraphType[]
   forkedArr: SeriesGraphType[]
   downloadArr: SeriesGraphType[]
 }
-const TempGraph = ({ staredArr, forkedArr, downloadArr }: TempGraphProps) => {
+const TempGraph = () => {
   const metrics = ['Pull Request Closed', 'Total Forks', 'Total Stars']
   const [currentMetric, setCurrentMetric] = useState<string>('Download')
   const [options, setOptions] = useState<Highcharts.Options>({})
-  const [mockData, setMockData] = useState<SeriesGraphType[]>(downloadArr)
 
-  //   console.log(currentMetric)
-  // console.log(mockData)
+  const mockDemo: SeriesGraphType[] = [
+    {
+      name: 'Project 1',
+      data: [1, 3, 4, 7, 2],
+    },
+    {
+      name: 'Project 2',
+      data: [2, 4, 5, 6, 2],
+    },
+    {
+      name: 'Project 3',
+      data: [3, 4, 4, 2, 5],
+    },
+  ]
+  const [mockData, setMockData] = useState<SeriesGraphType[]>(mockDemo)
   useEffect(() => {
     setOptions({
       chart: {
@@ -59,7 +71,7 @@ const TempGraph = ({ staredArr, forkedArr, downloadArr }: TempGraphProps) => {
           pointStart: 1,
         },
         areaspline: {
-          fillOpacity: 0.03,
+          fillOpacity: 0.01,
         },
       },
       series: mockData,
@@ -87,11 +99,11 @@ const TempGraph = ({ staredArr, forkedArr, downloadArr }: TempGraphProps) => {
 
   return (
     <div>
-      <div className="mx-40">
+      <div className="px-2">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
-      <div className="text-center mt-4 mb-12"></div>
-      <div className="flex flex-row justify-center space-x-10 mt-4">
+      <div className="text-center mt-4"></div>
+      {/* <div className="flex flex-row justify-center space-x-10 mt-4">
         {metrics.map((metric, index) => (
           <button
             key={index}
@@ -102,7 +114,7 @@ const TempGraph = ({ staredArr, forkedArr, downloadArr }: TempGraphProps) => {
             {metric}
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   )
 }
