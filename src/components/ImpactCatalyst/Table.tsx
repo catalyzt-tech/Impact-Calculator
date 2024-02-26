@@ -1,3 +1,5 @@
+import { Project } from "../../types/project"
+
 interface TableProps {
   selectedProject: Project[]
   totalStats: TotalStats
@@ -8,8 +10,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
   console.log(selectedProject, totalStats, weight)
   return (
     <>
-      <div className="flex flex-row  justify-center">
-        <div className="overflow-x-auto  w-full">
+      <div className="flex flex-row justify-center">
           <table className="table">
             <thead>
               <tr className="text-sm text-black bg-slate-100">
@@ -117,7 +118,6 @@ const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
               })}
             </tbody>
           </table>
-        </div>
       </div>
     </>
   )

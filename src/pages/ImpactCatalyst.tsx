@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import TempGraph from '../components/ImpactCatalyst/Graph'
-import ImpactMetric from '../components/ImpactCatalyst/ImpactMetric'
+import ImpactVector from '../components/ImpactCatalyst/ImpactVector'
 import Table from '../components/ImpactCatalyst/Table'
 import { client } from '../main'
 import {
@@ -221,17 +221,17 @@ const ImpactCalculator: FC = () => {
   }
   return (
     <>
-      <h1 className="text-center font-bold text-2xl mt-10 mb-8 mt-4">
+      <h1 className="text-center font-bold text-2xl my-8">
         Impact Calculator
       </h1>
-      <div className="grid grid-cols-3 gap-3">
-        <div className="col-span-2 border pt-10">
+      <div className="grid grid-cols-4 gap-3">
+        <div className="col-span-3 border pt-10">
           <TempGraph downloadArr={download} staredArr={star} forkedArr={fork} />
         </div>
-        <div className="flex flex-col justify-center items-center border ">
-          <ImpactMetric weightData={weight} weightHandler={setWeight} />
+        <div className="flex flex-col justify-center border ">
+          <ImpactVector weightData={weight} weightHandler={setWeight} />
         </div>
-        <div className="col-span-2 border">
+        <div className="col-span-3 border">
           <Table
             selectedProject={selectedProject}
             totalStats={totalStats}

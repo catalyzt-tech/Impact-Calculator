@@ -1,11 +1,11 @@
 import { FC, ChangeEvent } from 'react'
 
-interface ImpactMetricProps {
+interface ImpactVectorProps {
   weightData: number[]
   weightHandler: (weight: number[]) => void
 }
 
-const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
+const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
   const Metric = [
     'Total Contributors',
     'Total Forks',
@@ -75,4 +75,4 @@ const ImpactMetric: FC<ImpactMetricProps> = ({ weightData, weightHandler }) => {
   )
 }
 
-export default ImpactMetric
+export default ImpactVector
