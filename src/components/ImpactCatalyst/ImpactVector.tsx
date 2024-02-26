@@ -34,7 +34,7 @@ const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
   }
 
   return (
-    <>
+    <div className='flex flex-col justify-center items-center'>
       <div className=" pb-8 px-8 w-fit">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
@@ -71,7 +71,7 @@ const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
           Select Metric Vectors
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

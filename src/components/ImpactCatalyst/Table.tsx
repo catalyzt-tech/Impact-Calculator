@@ -10,7 +10,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
   console.log(selectedProject, totalStats, weight)
   return (
     <>
-      <div className="flex flex-row justify-center">
+      <div className="overflow-x-auto">
           <table className="table">
             <thead>
               <tr className="text-sm text-black bg-slate-100">
