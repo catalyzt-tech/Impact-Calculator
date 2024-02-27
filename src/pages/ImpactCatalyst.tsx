@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Graph from '../components/ImpactCatalyst/Graph'
-import ImpactVector from '../components/ImpactCatalyst/ImpactVector'
+import ImpactMetrices from '../components/ImpactCatalyst/ImpactMetrics'
 import Table from '../components/ImpactCatalyst/Table'
 import { Project, TotalStats } from '../types/impactCalculator'
 
@@ -95,7 +95,7 @@ const ImpactCalculator: FC = () => {
           )}
         </div>
         <div className="flex flex-col justify-center border ">
-          <ImpactVector weightData={weight} weightHandler={setWeight} />
+          <ImpactMetrices weightData={weight} weightHandler={setWeight} />
         </div>
         <div className="col-span-4 border">
           {!loading ? (

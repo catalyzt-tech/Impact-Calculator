@@ -1,11 +1,11 @@
 import { FC, ChangeEvent } from 'react'
 
-interface ImpactVectorProps {
+interface ImpactMetricsProps {
   weightData: number[]
   weightHandler: (weight: number[]) => void
 }
 
-const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
+const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, weightHandler }) => {
   const Metric = [
     'Total Contributors',
     'Total Forks',
@@ -13,8 +13,6 @@ const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
     'Funding: Governance Fund',
     'Funding: RPGF2',
   ]
-
-  //const [totalWeightA, setTotalWeightA]   = useState(100)
 
   const handleChange = (index: number, value: number) => {
     const newWeight = [...weightData]
@@ -75,4 +73,4 @@ const ImpactVector: FC<ImpactVectorProps> = ({ weightData, weightHandler }) => {
   )
 }
 
-export default ImpactVector
+export default ImpactMetrics
