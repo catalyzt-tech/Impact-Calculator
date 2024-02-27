@@ -1,7 +1,6 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-// import { SeriesGraphType } from '../../types/impactCata'
+import { useCallback, useEffect, useState, useRef } from 'react'
 
 const calculateProjectAllocation = (
   project,
@@ -61,18 +60,18 @@ const calculateProjectAllocation = (
 }
 
 const TempGraph = ({ selectedProject, totalStats, weight }) => {
-  const [options, setOptions] = useState<Highcharts.Options>({})
-  const [allocationAmount, setAllocationAmount] = useState<number[]>([])
-  const [projectName, setProjectName] = useState<string[]>([])
+  const [options, setOptions] = useState({})
+  const [allocationAmount, setAllocationAmount] = useState([])
+  const [projectName, setProjectName] = useState([])
 
   const calculateAllocation = useCallback(async () => {
-    const opAllocation: number = 30000000
+    const opAllocation = 30000000
     return selectedProject.map((project) =>
       calculateProjectAllocation(project, totalStats, opAllocation, weight)
     )
-  }, [selectedProject, totalStats])
+  }, [selectedProject, totalStats, weight]) // Include weight in dependencies
 
-  const transformData = useCallback((allocationResult: any[]) => {
+  const transformData = useCallback((allocationResult) => {
     const sortedAllocation = allocationResult
       .sort((a, b) => Number(b.amount) - Number(a.amount))
       .filter((project) => Number(project.amount) > 0)
@@ -96,7 +95,6 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       },
       xAxis: {
         categories: projectName,
-        //fontsize
         labels: {
           style: {
             fontSize: '10px',
@@ -110,7 +108,7 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
           text: 'OP Allocation',
         },
       },
-      colors: ['#FF0000'], //red op  color
+      colors: ['#FF0000'],
       legend: {
         enabled: false,
       },
@@ -140,19 +138,12 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
           name: 'Amount',
           data: allocationAmount,
         },
-        // {
-        //   type: 'line',
-        //   name: 'Cumulative Amount',
-        //   data: cumulativeAmount,
-        //   color: '#0000FF', //blue color
-        // },
       ],
     })
-  }, [weight, allocationAmount])
+  }, [allocationAmount, projectName])
+
   useEffect(() => {
-    calculateAllocation().then((allocationResult) =>
-      transformData(allocationResult)
-    )
+    calculateAllocation().then(transformData)
   }, [calculateAllocation, transformData])
 
   return (
