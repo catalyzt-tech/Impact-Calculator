@@ -1,9 +1,11 @@
+import { WeightType } from '../../types/ImpactMetric'
+import { TotalStats } from '../../types/impactCalculator'
 import { Project } from '../../types/project'
 
 interface TableProps {
   selectedProject: Project[]
   totalStats: TotalStats
-  weight: number[]
+  weight: WeightType[]
 }
 const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
   const opAllocation = 30000000

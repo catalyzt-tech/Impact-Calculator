@@ -3,13 +3,37 @@ import { useLocation } from 'react-router-dom'
 import Graph from '../components/ImpactCatalyst/Graph'
 import ImpactMetrices from '../components/ImpactCatalyst/ImpactMetrics'
 import Table from '../components/ImpactCatalyst/Table'
+import { WeightType } from '../types/ImpactMetric'
 import { Project, TotalStats } from '../types/impactCalculator'
 
 const ImpactCalculator: FC = () => {
   const location = useLocation()
   const selectedProject: Project[] = location.state?.selectedProject || []
   const [loading, setLoading] = useState(true)
-  const [weight, setWeight] = useState([20, 20, 20, 20, 20])
+  
+  const [weight, setWeight] = useState<WeightType[]>([
+    {
+      metric: "Total Contributors",
+      value: 20,
+    },
+    {
+      metric: "Total Forks",
+      value: 20,
+    },
+    {
+      metric: "Total Stars",
+      value: 20,
+    },
+    {
+      metric: "Funding: Governance Fund",
+      value: 20,
+    },
+    {
+      metric: "Funding: RPGF2",
+      value: 20,
+    },
+  ])
+
   const [totalStats, setTotalStats] = useState<TotalStats>({
     'Total Contributors': 0,
     'Total Forks': 0,
@@ -67,8 +91,8 @@ const ImpactCalculator: FC = () => {
     //   )
     // })
     const filter = await osoData //Assume select all project
-    console.log('filterDataSet')
-    console.log(filterDataSet)
+    // console.log('filterDataSet')
+    // console.log(filterDataSet)
     await setFilterDataSet(filter)
   }
   useEffect(() => {
@@ -95,7 +119,7 @@ const ImpactCalculator: FC = () => {
           )}
         </div>
         <div className="flex flex-col justify-center border ">
-          <ImpactMetrices weightData={weight} weightHandler={setWeight} />
+          <ImpactMetrices weightData={weight} setWeight={setWeight} />
         </div>
         <div className="col-span-4 border">
           {!loading ? (
