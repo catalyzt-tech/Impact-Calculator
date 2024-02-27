@@ -7,14 +7,7 @@ interface ImpactMetricsProps {
 }
 
 const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
-  const Metric = [
-    'Total Contributors',
-    'Total Forks',
-    'Total Stars',
-    'Funding: Governance Fund',
-    'Funding: RPGF2',
-  ]
-
+  
   const handleChange = (metric: string, value: number) => {
     setWeight(prevWeight => {
       const updatedWeight = [...prevWeight];

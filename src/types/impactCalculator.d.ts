@@ -94,10 +94,3 @@ export type Project = {
   'GTP: Has Token': string
   'GTP: Has VC Funding': number
 }
-export type TotalStats = {
-  'Total Contributors': number
-  'Total Forks': number
-  'Total Stars': number
-  'Funding: Governance Fund': number
-  'Funding: RPGF2': number
-}

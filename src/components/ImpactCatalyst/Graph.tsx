@@ -1,80 +1,21 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useCallback, useEffect, useState, useRef } from 'react'
-
-const calculateProjectAllocation = (
-  project,
-  totalStats,
-  opAllocation,
-  weight
-) => {
-  const allocation = {
-    'Total Contributors':
-      totalStats['Total Contributors'] !== 0
-        ? Number(
-            (project['OSO: Total Contributors'] /
-              totalStats['Total Contributors']) *
-              weight[0]
-          )
-        : 0,
-    'Total Forks':
-      totalStats['Total Forks'] !== 0
-        ? Number(
-            (project['OSO: Total Forks'] / totalStats['Total Forks']) *
-              weight[1]
-          )
-        : 0,
-    'Total Stars':
-      totalStats['Total Stars'] !== 0
-        ? Number(
-            (project['OSO: Total Stars'] / totalStats['Total Stars']) *
-              weight[2]
-          )
-        : 0,
-    'Funding: Governance Fund':
-      totalStats['Funding: Governance Fund'] !== 0
-        ? Number(
-            (project['Funding: Partner Fund'] /
-              totalStats['Funding: Governance Fund']) *
-              weight[3]
-          )
-        : 0,
-    'Funding: RPGF2':
-      totalStats['Funding: RPGF2'] !== 0
-        ? Number(
-            (project['Funding: RPGF2'] / totalStats['Funding: RPGF2']) *
-              weight[4]
-          )
-        : 0,
-  }
-  const totalAllocation =
-    allocation['Total Contributors'] +
-    allocation['Total Forks'] +
-    allocation['Total Stars'] +
-    allocation['Funding: Governance Fund'] +
-    allocation['Funding: RPGF2']
-  return {
-    project: project['Meta: Project Name'],
-    amount: ((totalAllocation * opAllocation) / 100).toFixed(2),
-  }
-}
+import { calculateAllocationTest } from '../../hooks/process'
 
 const TempGraph = ({ selectedProject, totalStats, weight }) => {
   const [options, setOptions] = useState({})
   const [allocationAmount, setAllocationAmount] = useState([])
   const [projectName, setProjectName] = useState([])
 
+  console.log(calculateAllocationTest(selectedProject,totalStats,30000000, weight))
+
   const calculateAllocation = useCallback(async () => {
-    const opAllocation = 30000000
-    return selectedProject.map((project) =>
-      calculateProjectAllocation(project, totalStats, opAllocation, weight)
-    )
+    return calculateAllocationTest(selectedProject,totalStats,30000000, weight)
   }, [selectedProject, totalStats, weight]) // Include weight in dependencies
 
   const transformData = useCallback((allocationResult) => {
-    const sortedAllocation = allocationResult
-      .sort((a, b) => Number(b.amount) - Number(a.amount))
-      .filter((project) => Number(project.amount) > 0)
+    const sortedAllocation = allocationResult.sort((a, b) => Number(b.amount) - Number(a.amount)).filter((project) => Number(project.amount) > 0)
     const projectName = sortedAllocation.map((project) => project.project)
     const amount = sortedAllocation.map((project) => Number(project.amount))
     setAllocationAmount(amount)
