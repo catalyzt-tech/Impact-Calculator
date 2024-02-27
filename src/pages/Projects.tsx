@@ -46,7 +46,8 @@ const Projects: FC = () => {
         return [...prevState, project]
       }
     })
-    console.log(selectedProject)
+    // console.log('selectedProject')
+    // console.log(selectedProject)
   }
 
   const handleSeemore = () => {
@@ -63,7 +64,6 @@ const Projects: FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mx-20 mb-28">
-     
       <h1 className="text-center font-bold text-3xl mt-10">Projects</h1>
       <Search originData={originData} setData={setDisplayData} />
       <div className="overflow-x-auto">
@@ -82,13 +82,16 @@ const Projects: FC = () => {
             {displayData.slice(0, Pagination).map((project) => (
               <tr key={project['Meta: Project Name']}>
                 <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-secondary border-accent"
-                      onChange={() => handleCheckboxChange(project)}
-                    />
-                  </label>
+                  <form action="">
+                    <label>
+                      ''
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-secondary border-accent"
+                        onChange={() => handleCheckboxChange(project)}
+                      />
+                    </label>
+                  </form>
                 </th>
                 <td>
                   <div className="flex items-center gap-3">

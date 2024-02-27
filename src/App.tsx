@@ -5,7 +5,7 @@ import Layout from './pages/Layout'
 import Category from './pages/Category'
 import Projects from './pages/Projects.tsx'
 import ImpactCatalyst from './pages/ImpactCatalyst'
-import TempGraph from './pages/TempGraph.tsx'
+
 function App() {
   return (
     <>
@@ -16,7 +16,6 @@ function App() {
             <Route path="category" element={<Category />} />
             <Route path="category/:slug" element={<Projects />} />
             <Route path="impact" element={<ImpactCatalyst />} />
-            <Route path="tempgraph" element={<TempGraph />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
