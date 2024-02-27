@@ -84,7 +84,7 @@ const Projects: FC = () => {
                 <th>
                   <form action="">
                     <label>
-                      ''
+                      {''}
                       <input
                         type="checkbox"
                         className="checkbox checkbox-secondary border-accent"

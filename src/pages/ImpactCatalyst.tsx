@@ -3,21 +3,11 @@ import { useLocation } from 'react-router-dom'
 import Graph from '../components/ImpactCatalyst/Graph'
 import ImpactVector from '../components/ImpactCatalyst/ImpactVector'
 import Table from '../components/ImpactCatalyst/Table'
-import { SeriesGraphType } from '../types/impactCata'
-import { Project } from '../types/project'
-
-interface TotalStats {
-  'Total Contributors': number
-  'Total Forks': number
-  'Total Stars': number
-  'Funding: Governance Fund': number
-  'Funding: RPGF2': number
-}
+import { Project, TotalStats } from '../types/impactCalculator'
 
 const ImpactCalculator: FC = () => {
   const location = useLocation()
   const selectedProject: Project[] = location.state?.selectedProject || []
-  const opAllocation: number = 10000000
   const [loading, setLoading] = useState(true)
   const [weight, setWeight] = useState([20, 20, 20, 20, 20])
   const [totalStats, setTotalStats] = useState<TotalStats>({
@@ -32,39 +22,42 @@ const ImpactCalculator: FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const osoData = await fetch('/static/rpgf3_oso.json')
-      const osoJson = await osoData.json()
-      await setOsoData(osoJson)
+      const osoDataResponse = await fetch('/static/rpgf3_oso.json')
+      const osoJson = await osoDataResponse.json()
+
+      const updatedStats: TotalStats = osoJson.reduce(
+        (acc, project) => {
+          const contributors = Number(project['OSO: Total Contributors'])
+          const forks = Number(project['OSO: Total Forks'])
+          const stars = Number(project['OSO: Total Stars'])
+          const governanceFund = Number(project['Funding: Partner Fund'])
+          const rpgf2 = Number(project['Funding: RPGF2'])
+          return {
+            'Total Contributors': acc['Total Contributors'] + contributors,
+            'Total Forks': acc['Total Forks'] + forks,
+            'Total Stars': acc['Total Stars'] + stars,
+            'Funding: Governance Fund':
+              acc['Funding: Governance Fund'] + governanceFund,
+            'Funding: RPGF2': acc['Funding: RPGF2'] + rpgf2,
+          }
+        },
+        {
+          'Total Contributors': 0,
+          'Total Forks': 0,
+          'Total Stars': 0,
+          'Funding: Governance Fund': 0,
+          'Funding: RPGF2': 0,
+        }
+      )
+
+      const filter = osoJson //Assume select all project
+
+      setOsoData(osoJson)
+      setTotalStats(updatedStats)
+      setFilterDataSet(filter)
+      setLoading(false)
     }
     fetchData()
-
-    //Assume use all data
-    const updatedStats: TotalStats = osoData.reduce(
-      (acc, project) => {
-        const contributors = Number(project['OSO: Total Contributors'])
-        const forks = Number(project['OSO: Total Forks'])
-        const stars = Number(project['OSO: Total Stars'])
-        const governanceFund = Number(project['Funding: Partner Fund'])
-        const rpgf2 = Number(project['Funding: RPGF2'])
-        return {
-          'Total Contributors': acc['Total Contributors'] + contributors,
-          'Total Forks': acc['Total Forks'] + forks,
-          'Total Stars': acc['Total Stars'] + stars,
-          'Funding: Governance Fund':
-            acc['Funding: Governance Fund'] + governanceFund,
-          'Funding: RPGF2': acc['Funding: RPGF2'] + rpgf2,
-        }
-      },
-      {
-        'Total Contributors': 0,
-        'Total Forks': 0,
-        'Total Stars': 0,
-        'Funding: Governance Fund': 0,
-        'Funding: RPGF2': 0,
-      }
-    )
-    setTotalStats(updatedStats)
-    setLoading(false)
   }, [selectedProject])
 
   const filterData = async () => {
@@ -82,7 +75,7 @@ const ImpactCalculator: FC = () => {
     if (osoData.length > 0 && selectedProject.length > 0) {
       filterData()
     }
-  }, [osoData, selectedProject])
+  }, [osoData, selectedProject, filterData])
 
   if (loading === true) return <div>Loading...</div>
 
@@ -91,7 +84,15 @@ const ImpactCalculator: FC = () => {
       <h1 className="text-center font-bold text-2xl my-8">Impact Calculator</h1>
       <div className="grid grid-cols-4 gap-3">
         <div className="col-span-3 border pt-10">
-          <Graph selectedProject={filterDataSet} totalStats={totalStats} />
+          {!loading ? (
+            <Graph
+              selectedProject={filterDataSet}
+              totalStats={totalStats}
+              weight={weight}
+            />
+          ) : (
+            <div>Loading...</div>
+          )}
         </div>
         <div className="flex flex-col justify-center border ">
           <ImpactVector weightData={weight} weightHandler={setWeight} />
