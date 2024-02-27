@@ -97,7 +97,7 @@ const ImpactCalculator: FC = () => {
         <div className="flex flex-col justify-center border ">
           <ImpactVector weightData={weight} weightHandler={setWeight} />
         </div>
-        <div className="col-span-3 border">
+        <div className="col-span-4 border">
           {!loading ? (
             <Table
               selectedProject={filterDataSet}
