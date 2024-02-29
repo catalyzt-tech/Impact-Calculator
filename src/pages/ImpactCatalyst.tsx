@@ -17,15 +17,15 @@ const ImpactCalculator: FC = () => {
   const [weight, setWeight] = useState<WeightType[]>([
     {
       metric: 'OSO: Total Contributors',
-      value: 20,
+      value: 100,
     },
     {
       metric: 'OSO: Total Forks',
-      value: 20,
+      value: 100,
     },
     {
       metric: 'OSO: Total Stars',
-      value: 20,
+      value: 100,
     },
   ])
   // TODO: change weight scheme =>

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import { WeightType } from '../../types/ImpactMetric'
 
 interface ImpactMetricsProps {
@@ -7,22 +7,27 @@ interface ImpactMetricsProps {
 }
 
 const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
-  
+  const [errors, setErrors] = useState<Record<string, boolean>>({})
   const handleChange = (metric: string, value: number) => {
-    setWeight(prevWeight => {
-      const updatedWeight = [...prevWeight];
-      const index = updatedWeight.findIndex(item => item.metric === metric);
+    if (value < 0 || value > 100) {
+      setErrors((prevErrors) => ({ ...prevErrors, [metric]: true }))
+      return
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [metric]: false }))
+    setWeight((prevWeight) => {
+      const updatedWeight = [...prevWeight]
+      const index = updatedWeight.findIndex((item) => item.metric === metric)
       if (index !== -1) {
-        updatedWeight[index] = { ...updatedWeight[index], value: value };
+        updatedWeight[index] = { ...updatedWeight[index], value: value }
       }
-      return updatedWeight;
-    });
+      return updatedWeight
+    })
   }
 
   console.log(weightData)
 
   return (
-    <div className='flex flex-col justify-center items-center'>
+    <div className="flex flex-col justify-center items-center">
       <div className=" pb-8 px-8 w-fit">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
@@ -49,6 +54,9 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
                   handleChange(item.metric, Number(e.target.value))
                 }
               />
+              {errors[item.metric] && (
+                <div className="flex flex-col text-red-500">Invalid Input</div>
+              )}
               <div className="ml-4">%</div>
             </div>
           ))}

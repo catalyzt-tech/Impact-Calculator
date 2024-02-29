@@ -33,7 +33,10 @@ export const calculateAllocationTest = (
     })
     return {
       project: project['Meta: Project Name'],
-      amount: ((allocationByProject * opAllocation) / 100).toFixed(2),
+      amount: (
+        (allocationByProject * opAllocation) /
+        (weight.length * 100)
+      ).toFixed(2),
     }
   })
 }

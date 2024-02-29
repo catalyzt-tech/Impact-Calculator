@@ -10,8 +10,8 @@ const Category: FC = () => {
     'End User Experience and Adoption',
   ]
   return (
-    <>
-      <h1 className="text-center font-bold text-3xl my-10">Category</h1>
+    <div className="flex flex-col h-screen">
+      <h1 className="text-center font-bold text-3xl mt-10">Category</h1>
       <div className="flex flex-col items-center justify-center">
         {categoryList.map((categoryName, index) => (
           <Link
@@ -25,7 +25,8 @@ const Category: FC = () => {
           </Link>
         ))}
       </div>
-    </>
+      <div className="flex flex-grow"></div>
+    </div>
   )
 }
 export default Category

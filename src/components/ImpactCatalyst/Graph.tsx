@@ -32,6 +32,8 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
         .filter((project) => Number(project.amount) > 0)
       const projectName = sortedAllocation.map((project) => project.project)
       const amount = sortedAllocation.map((project) => Number(project.amount))
+      //console.log sum of  amonunt
+      console.log(amount.reduce((a, b) => a + b, 0))
       setAllocationAmount(amount)
       setProjectName(projectName)
     },
