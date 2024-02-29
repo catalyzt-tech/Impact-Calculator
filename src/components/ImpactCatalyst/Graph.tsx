@@ -1,26 +1,42 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { calculateAllocationTest } from '../../hooks/process'
 
+interface allocationResultType {
+  project: string
+  amount: string
+}
 const TempGraph = ({ selectedProject, totalStats, weight }) => {
   const [options, setOptions] = useState({})
-  const [allocationAmount, setAllocationAmount] = useState([])
-  const [projectName, setProjectName] = useState([])
+  const [allocationAmount, setAllocationAmount] = useState<number[]>([])
+  const [projectName, setProjectName] = useState<string[]>([])
 
-  console.log(calculateAllocationTest(selectedProject,totalStats,30000000, weight))
+  console.log(
+    calculateAllocationTest(selectedProject, totalStats, 30000000, weight)
+  )
 
   const calculateAllocation = useCallback(async () => {
-    return calculateAllocationTest(selectedProject,totalStats,30000000, weight)
+    return calculateAllocationTest(
+      selectedProject,
+      totalStats,
+      30000000,
+      weight
+    )
   }, [selectedProject, totalStats, weight]) // Include weight in dependencies
 
-  const transformData = useCallback((allocationResult) => {
-    const sortedAllocation = allocationResult.sort((a, b) => Number(b.amount) - Number(a.amount)).filter((project) => Number(project.amount) > 0)
-    const projectName = sortedAllocation.map((project) => project.project)
-    const amount = sortedAllocation.map((project) => Number(project.amount))
-    setAllocationAmount(amount)
-    setProjectName(projectName)
-  }, [])
+  const transformData = useCallback(
+    (allocationResult: allocationResultType[]) => {
+      const sortedAllocation = allocationResult
+        .sort((a, b) => Number(b.amount) - Number(a.amount))
+        .filter((project) => Number(project.amount) > 0)
+      const projectName = sortedAllocation.map((project) => project.project)
+      const amount = sortedAllocation.map((project) => Number(project.amount))
+      setAllocationAmount(amount)
+      setProjectName(projectName)
+    },
+    []
+  )
 
   useEffect(() => {
     setOptions({

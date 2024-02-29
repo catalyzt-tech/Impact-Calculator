@@ -16,17 +16,17 @@ const ImpactCalculator: FC = () => {
   const [osoData, setOsoData] = useState<ProjectType[]>([])
   const [weight, setWeight] = useState<WeightType[]>([
     {
-      metric: "OSO: Total Contributors",
+      metric: 'OSO: Total Contributors',
       value: 20,
     },
     {
-      metric: "OSO: Total Forks",
+      metric: 'OSO: Total Forks',
       value: 20,
     },
     {
-      metric: "OSS: Total Stars",
+      metric: 'OSO: Total Stars',
       value: 20,
-    }
+    },
   ])
   // TODO: change weight scheme =>
   // {
@@ -36,8 +36,6 @@ const ImpactCalculator: FC = () => {
   //   "Funding: Governance Fund": 0,
   //   "Funding: RPGF2": 0,
   // }
-
-  
 
   useEffect(() => {
     const fetchData = async () => {

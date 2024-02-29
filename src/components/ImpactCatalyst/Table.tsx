@@ -1,15 +1,21 @@
 import { WeightType } from '../../types/ImpactMetric'
-import { TotalStats } from '../../types/impactCalculator'
-import { Project } from '../../types/project'
-
-interface TableProps {
-  selectedProject: Project[]
-  totalStats: TotalStats
-  weight: WeightType[]
-}
-const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
+// import { ProjectType } from '../../types/project'
+import { calculateAllocationTest } from '../../hooks/process'
+import { Project } from '../../types/impactCalculator'
+const Table = ({ selectedProject, totalStats, weight }) => {
   const opAllocation = 30000000
+  console.log('table')
   console.log(selectedProject, totalStats, weight)
+
+  const allocation = calculateAllocationTest(
+    selectedProject,
+    totalStats,
+    opAllocation,
+    weight
+  )
+
+  console.log('allocation', allocation)
+
   return (
     <>
       <div className="overflow-x-auto">
@@ -17,81 +23,26 @@ const Table = ({ selectedProject, totalStats, weight }: TableProps) => {
           <thead>
             <tr className="text-sm text-black bg-slate-100">
               <th className="border-r">Project Name</th>
-              <th>Total Contributors</th>
-              <th>Total Forks</th>
-              <th>Total Stars</th>
-              <th>Funding: Governance Fund</th>
-              <th>Funding: RPGF2</th>
+              {weight.map((item: WeightType, index: number) => (
+                <th key={index}>{item.metric}</th>
+              ))}
               <th className="border-l">Allocation</th>
             </tr>
           </thead>
           <tbody>
-            {selectedProject.map((project) => {
-              const allocation = {
-                'Total Contributors':
-                  totalStats['Total Contributors'] !== 0
-                    ? Number(
-                        (project['OSO: Total Contributors'] /
-                          totalStats['Total Contributors']) *
-                          weight[0]
-                      )
-                    : 0,
-                'Total Forks':
-                  totalStats['Total Forks'] !== 0
-                    ? Number(
-                        (project['OSO: Total Forks'] /
-                          totalStats['Total Forks']) *
-                          weight[1]
-                      )
-                    : 0,
-                'Total Stars':
-                  totalStats['Total Stars'] !== 0
-                    ? Number(
-                        (project['OSO: Total Stars'] /
-                          totalStats['Total Stars']) *
-                          weight[2]
-                      )
-                    : 0,
-                'Funding: Governance Fund':
-                  totalStats['Funding: Governance Fund'] !== 0
-                    ? Number(
-                        (project['Funding: Partner Fund'] /
-                          totalStats['Funding: Governance Fund']) *
-                          weight[3]
-                      )
-                    : 0,
-                'Funding: RPGF2':
-                  totalStats['Funding: RPGF2'] !== 0
-                    ? Number(
-                        (project['Funding: RPGF2'] /
-                          totalStats['Funding: RPGF2']) *
-                          weight[4]
-                      )
-                    : 0,
-              }
-              const result =
-                allocation['Total Contributors'] +
-                allocation['Total Forks'] +
-                allocation['Total Stars'] +
-                allocation['Funding: Governance Fund'] +
-                allocation['Funding: RPGF2']
-
-              // console.log(weight, allocation, result, opAllocation)
+            {selectedProject.map((project: Project, index: number) => {
               return (
                 <tr key={project['Project ID']}>
-                  {/* <th>{project['Project ID']}</th> */}
                   <td className="border-r">{project['Meta: Project Name']}</td>
-                  <td>{project['OSO: Total Contributors']}</td>
-                  <td>{project['OSO: Total Forks']}</td>
-                  <td>{project['OSO: Total Stars']}</td>
-                  <td>{project['Funding: Partner Fund']}</td>
-                  <td>{project['Funding: RPGF2']}</td>
+                  {weight.map((item: WeightType, index: number) => (
+                    <td key={index}>{project[item.metric] || '-'}</td>
+                  ))}
                   <td className="flex flex-row border-l">
                     <div>
                       {new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
-                      }).format(Number((result * opAllocation) / 100))}
+                      }).format(Number(allocation[index].amount))}
                     </div>
                     <div className="flex flex-row justify-end ml-2">
                       <svg
