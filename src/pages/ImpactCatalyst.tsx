@@ -41,9 +41,20 @@ const ImpactCalculator: FC = () => {
     const fetchData = async () => {
       const osoDataResponse = await fetch('/static/rpgf3_oso.json')
       const osoJson = await osoDataResponse.json()
-      const updatedStatsSum = everyProjectStatSum(osoJson)
 
-      setOsoData(osoJson)
+      const realSelectedProject = selectedProject.map(
+        (project: ProjectType) => {
+          return osoJson.find((osoProject: ProjectType) => {
+            return (
+              osoProject['Meta: Project Name'] === project['Meta: Project Name']
+            )
+          })
+        }
+      )
+      console.log('realSelectedProject', realSelectedProject)
+      const updatedStatsSum = everyProjectStatSum(realSelectedProject)
+
+      setOsoData(realSelectedProject)
       setTotalStats(updatedStatsSum as Partial<ProjectType>)
       setLoading(false)
     }
