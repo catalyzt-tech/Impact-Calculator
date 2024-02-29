@@ -25,7 +25,8 @@ export const calculateAllocationTest = (
     weight.map((item: WeightType) => {
       if (
         !isNaN(project[item.metric] && !isNaN(totalStats[item.metric])) &&
-        !isNaN(item.value)
+        !isNaN(item.value) &&
+        totalStats[item.metric] !== 0
       ) {
         allocationByProject +=
           (+project[item.metric] / +totalStats[item.metric]) * item.value

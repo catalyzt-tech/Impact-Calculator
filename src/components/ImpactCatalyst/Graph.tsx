@@ -1,4 +1,4 @@
-import Highcharts from 'highcharts'
+import Highcharts, { format } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useCallback, useEffect, useState } from 'react'
 import { calculateAllocationTest } from '../../hooks/process'
@@ -65,6 +65,11 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
         min: 0,
         title: {
           text: 'OP Allocation',
+          style: {
+            //font weight and size
+            fontWeight: 'bold',
+            fontSize: '14px',
+          },
         },
       },
       colors: ['#FF0000'],
@@ -76,16 +81,31 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       },
       tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat:
-          '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.2f} OP</b></td></tr>',
+
+        // pointFormat: `<tr><td style="color:{series.color};padding:0">{series.name}: </td>
+
+        //   <td style="padding:0"><b>{point.y:.2f}</b> <img src ="/static/op_logo.svg"/ style= "width:1.5em; display:inline">       </td>
+        //   {' '}</tr>`,
         footerFormat: '</table>',
+        formatter: function () {
+          return (
+            '<b style ="margin-bottom:10em;">' +
+            this.x +
+            '</b><br/><br/>' +
+            this.series.name +
+            ': ' +
+            this.y +
+            '<img src ="/static/op_logo.svg"/ style= "width:1.5em; display:inline; margin-right:1.5em; margin-left:0.5em"/>' +
+            '<br/>'
+          )
+        },
+
         shared: true,
         useHTML: true,
       },
       plotOptions: {
         column: {
-          pointPadding: 0,
+          pointPadding: 0.05,
           borderWidth: 0,
           groupPadding: 0,
           shadow: false,
@@ -94,7 +114,7 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       series: [
         {
           type: 'column',
-          name: 'Amount',
+          name: 'Allocation',
           data: allocationAmount,
         },
       ],

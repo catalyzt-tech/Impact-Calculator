@@ -27,6 +27,14 @@ const ImpactCalculator: FC = () => {
       metric: 'OSO: Total Stars',
       value: 100,
     },
+    {
+      metric: 'Funding: Governance Fund',
+      value: 100,
+    },
+    {
+      metric: 'Funding: RPGF2',
+      value: 100,
+    },
   ])
   // TODO: change weight scheme =>
   // {
@@ -67,17 +75,17 @@ const ImpactCalculator: FC = () => {
     <>
       <h1 className="text-center font-bold text-2xl my-8">Impact Calculator</h1>
       <div className="grid grid-cols-4 gap-3">
-        <div className="col-span-3 border pt-10">
+        <div className="col-span-3 border pt-10  overflow-hidden rounded-xl">
           <Graph
             selectedProject={osoData}
             totalStats={totalStats}
             weight={weight}
           />
         </div>
-        <div className="flex flex-col justify-center border ">
+        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl">
           <ImpactMetrices weightData={weight} setWeight={setWeight} />
         </div>
-        <div className="col-span-4 border">
+        <div className="col-span-4 border overflow-hidden rounded-xl">
           <Table
             selectedProject={osoData}
             totalStats={totalStats}

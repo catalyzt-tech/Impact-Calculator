@@ -10,7 +10,7 @@ const Category: FC = () => {
     'End User Experience and Adoption',
   ]
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[calc(100vh-12.5em)] ">
       <h1 className="text-center font-bold text-3xl mt-10">Category</h1>
       <div className="flex flex-col items-center justify-center">
         {categoryList.map((categoryName, index) => (

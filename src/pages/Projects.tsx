@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Search from '../components/Search'
-import { Project } from '../types/project'
+import { ProjectType } from '../types/project'
 
 const Projects: FC = () => {
   const location = useLocation()
@@ -24,7 +24,7 @@ const Projects: FC = () => {
   useEffect(() => {
     if (selectedCategory) {
       console.log('fetching displayData')
-      fetch('/static/rpgf3.json')
+      fetch('/static/rpgf3_oso.json')
         .then((res) => res.json())
         .then((d) => {
           const temp = d.filter(
@@ -87,7 +87,7 @@ const Projects: FC = () => {
                       {''}
                       <input
                         type="checkbox"
-                        className="checkbox checkbox-secondary border-accent"
+                        className="checkbox checkbox-marked"
                         onChange={() => handleCheckboxChange(project)}
                       />
                     </label>
@@ -97,9 +97,17 @@ const Projects: FC = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img
+                        {/* <img
                           src="https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg"
                           alt="Avatar Tailwind CSS Component"
+                        /> */}
+                        <img
+                          src={
+                            project['Profile'] != ''
+                              ? project['Profile']
+                              : 'https://optimism-agora-prod.agora-prod.workers.dev/static/media/ProjectPlaceholder.4224b1d8645af5053465c412b73a25a0.svg'
+                          }
+                          alt=""
                         />
                       </div>
                     </div>
