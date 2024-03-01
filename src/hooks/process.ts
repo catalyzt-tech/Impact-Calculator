@@ -1,5 +1,6 @@
 import { WeightType } from '../types/ImpactMetric'
 import { ProjectType } from '../types/project'
+import { StatsType } from '../types/stats'
 
 //Impact Catalyst (Page) Hooks
 export const everyProjectStatSum = (projects: ProjectType[]) => {
@@ -16,7 +17,7 @@ export const everyProjectStatSum = (projects: ProjectType[]) => {
 //Graph (Component) Hooks
 export const calculateAllocationTest = (
   projects: ProjectType[],
-  totalStats: Partial<ProjectType>,
+  totalStats: StatsType,
   opAllocation: number,
   weight: WeightType[]
 ) => {

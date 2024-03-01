@@ -6,13 +6,14 @@ import Table from '../components/ImpactCatalyst/Table'
 import { WeightType } from '../types/ImpactMetric'
 import { ProjectType } from '../types/project'
 import { everyProjectStatSum } from '../hooks/process'
+import { StatsType } from '../types/stats'
 
 const ImpactCalculator: FC = () => {
   const location = useLocation()
   const selectedProject: ProjectType[] = location.state?.selectedProject
 
   const [loading, setLoading] = useState(true)
-  const [totalStats, setTotalStats] = useState<Partial<ProjectType>>()
+  const [totalStats, setTotalStats] = useState<StatsType>()
   const [osoData, setOsoData] = useState<ProjectType[]>([])
   const [weight, setWeight] = useState<WeightType[]>([
     {
@@ -63,7 +64,7 @@ const ImpactCalculator: FC = () => {
       const updatedStatsSum = everyProjectStatSum(realSelectedProject)
 
       setOsoData(realSelectedProject)
-      setTotalStats(updatedStatsSum as Partial<ProjectType>)
+      setTotalStats(updatedStatsSum as StatsType)
       setLoading(false)
     }
     fetchData()
