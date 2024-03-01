@@ -60,7 +60,7 @@ const Table = ({ selectedProject, totalStats, weight }) => {
                   className="text-sm transition-all duration-300 ease-in-out"
                   key={project['Project ID']}
                 >
-                  <td className="flex flex-row items-center border-r py-2 bg-yellow-50 font-semibold min-w-64">
+                  <td className="flex flex-row items-center border-r py-3 bg-yellow-50 font-semibold min-w-64">
                     <img
                       src={
                         project['Profile'] !== ''
@@ -70,7 +70,12 @@ const Table = ({ selectedProject, totalStats, weight }) => {
                       alt="project icon"
                       className="w-9 h-9 rounded-lg border border-white bg-white "
                     />
-                    <div className="ml-3">{project['Meta: Project Name']}</div>
+                    <div className="ml-3">
+                      <div>{project['Meta: Project Name']}</div>
+                      <div className="text-xs opacity-50 font-light truncate max-w-20 md:max-w-32 lg:max-w-full">
+                        {project['Meta: Bio']}
+                      </div>
+                    </div>
                   </td>
                   <td className=" py-2 ">{project['Result: # Ballots']}</td>
                   {weight.map((item: WeightType, index: number) => (

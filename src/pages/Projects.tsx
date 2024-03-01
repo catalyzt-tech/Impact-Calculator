@@ -7,11 +7,12 @@ const Projects: FC = () => {
   const location = useLocation()
   const selectedCategory: string = location.state?.category
 
-  const [selectedProject, setSelectedProject] = useState<Project[]>([])
-  const [displayData, setDisplayData] = useState<Project[]>([])
-  const [originData, setOriginData] = useState<Project[]>([])
+  const [selectedProject, setSelectedProject] = useState<ProjectType[]>([])
+  const [displayData, setDisplayData] = useState<ProjectType[]>([])
+  const [originData, setOriginData] = useState<ProjectType[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [Pagination, setPagination] = useState<number>(20)
+  const [checkMark, setCheckMark] = useState<number>(0)
 
   // const shuffle = (array: Project[]) => {
   //   for (let i = array.length - 1; i > 0; i--) {
@@ -50,6 +51,16 @@ const Projects: FC = () => {
     // console.log(selectedProject)
   }
 
+  const handleSelectAll = () => {
+    if (selectedProject.length === displayData.length) {
+      setSelectedProject([])
+      setCheckMark(0)
+    } else {
+      setSelectedProject(displayData)
+      setCheckMark(1)
+    }
+  }
+
   const handleSeemore = () => {
     setPagination(Pagination + 20)
   }
@@ -69,9 +80,18 @@ const Projects: FC = () => {
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
+
+          {/* {checkMark === 0 ? <div>Select All</div> : <div>Unselect All</div>} */}
           <thead>
             <tr>
-              <th></th>
+              <th>
+                {' '}
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-marked"
+                  onClick={() => handleSelectAll()}
+                />
+              </th>
               <th>Name</th>
               <th>Category</th>
               <th>In List</th>
@@ -89,6 +109,7 @@ const Projects: FC = () => {
                         type="checkbox"
                         className="checkbox checkbox-marked"
                         onChange={() => handleCheckboxChange(project)}
+                        checked={selectedProject.includes(project)}
                       />
                     </label>
                   </form>
@@ -172,11 +193,18 @@ const Projects: FC = () => {
         </div>
       </div>
       {/* link to impact page with state "selectedProject" */}
-      <Link to="/impact" state={{ selectedProject: selectedProject }}>
-        <button className="btn btn-secondary  self-end mt-8 px-20">
+
+      {selectedProject.length > 0 ? (
+        <Link to="/impact" state={{ selectedProject: selectedProject }}>
+          <button className="btn btn-secondary mt-8 px-20 bg-[#ff0000] hover:bg-[#ff0000]">
+            Continue
+          </button>
+        </Link>
+      ) : (
+        <button className="btn btn-secondary  mt-8 px-20" disabled>
           Continue
         </button>
-      </Link>
+      )}
     </div>
   )
 }

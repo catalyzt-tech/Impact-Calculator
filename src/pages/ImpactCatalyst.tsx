@@ -72,20 +72,20 @@ const ImpactCalculator: FC = () => {
   if (loading === true) return <div>Loading...</div>
 
   return (
-    <>
-      <h1 className="text-center font-bold text-2xl my-8">Impact Calculator</h1>
+    <div className=" px-10">
+      <h1 className="text-center font-bold text-3xl py-8">Impact Calculator</h1>
       <div className="grid grid-cols-4 gap-3">
-        <div className="col-span-3 border pt-10  overflow-hidden rounded-xl">
+        <div className="col-span-3 border pt-10  overflow-hidden rounded-xl bg-white">
           <Graph
             selectedProject={osoData}
             totalStats={totalStats}
             weight={weight}
           />
         </div>
-        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl">
+        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl bg-white">
           <ImpactMetrices weightData={weight} setWeight={setWeight} />
         </div>
-        <div className="col-span-4 border overflow-hidden rounded-xl">
+        <div className="col-span-4 border overflow-hidden rounded-xl bg-white">
           <Table
             selectedProject={osoData}
             totalStats={totalStats}
@@ -93,7 +93,7 @@ const ImpactCalculator: FC = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 export default ImpactCalculator

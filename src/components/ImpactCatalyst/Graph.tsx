@@ -105,7 +105,7 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       },
       plotOptions: {
         column: {
-          pointPadding: 0.05,
+          pointPadding: 0.01,
           borderWidth: 0,
           groupPadding: 0,
           shadow: false,
