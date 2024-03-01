@@ -37,14 +37,6 @@ const ImpactCalculator: FC = () => {
       value: 100,
     },
   ])
-  // TODO: change weight scheme =>
-  // {
-  //   "Total Contributors": 0,
-  //   "Total Forks": 0,
-  //   "Total Stars": 0,
-  //   "Funding: Governance Fund": 0,
-  //   "Funding: RPGF2": 0,
-  // }
 
   useEffect(() => {
     const fetchData = async () => {
