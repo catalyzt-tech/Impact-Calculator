@@ -9,7 +9,7 @@ const Home: FC = () => {
           <img src="/img/pheonix.png" alt="pheonix" className="max-w-sm" />
           <div>
             <h1 className="text-5xl font-bold">Impact Catalyzt</h1>
-            <p className="py-6 lg:pr-12">
+            <p className="font-normal py-6 lg:pr-12">
               The Impact Calculator is designed to streamline the evaluation of
               projects in the Optimism RetroPGF voting process by quantifying
               their impact through various metrics.

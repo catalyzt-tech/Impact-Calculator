@@ -29,8 +29,8 @@ const Projects: FC = () => {
         .then((res) => res.json())
         .then((d) => {
           const temp = d.filter(
-            (project: Project) =>
-              project[`Category: ${selectedCategory}` as keyof Project] == 1
+            (project: ProjectType) =>
+              project[`Category: ${selectedCategory}`] == 1
           )
           setDisplayData(temp)
           setOriginData(temp)
@@ -93,9 +93,10 @@ const Projects: FC = () => {
                 />
               </th>
               <th>Name</th>
-              <th>Category</th>
+              <th>
+                <div className="ml-3">Category</div>
+              </th>
               <th>In List</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -136,7 +137,7 @@ const Projects: FC = () => {
                       <div className="font-bold">
                         {project['Meta: Project Name']}
                       </div>
-                      <div className="text-sm opacity-50">
+                      <div className="text-sm font-normal opacity-50">
                         {project['Meta: Bio']}
                       </div>
                     </div>
@@ -173,10 +174,10 @@ const Projects: FC = () => {
                     <></>
                   )}
                 </td>
-                <td>19</td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
-                </th>
+                <td className="font-normal">{project['Result: # Ballots']}</td>
+                {/* <th>
+                  <button className="btn btn-ghost btn-xs">Details</button>
+                </th> */}
               </tr>
             ))}
             {/* foot */}

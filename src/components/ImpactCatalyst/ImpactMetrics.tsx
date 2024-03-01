@@ -24,11 +24,11 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
     })
   }
 
-  console.log(weightData)
+  // console.log(weightData)
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className=" pb-8 px-8 w-fit">
+    <div className="flex flex-col justify-center items-center mx-6">
+      <div className=" pb-8 px-4  w-full ">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
         </div>
@@ -40,16 +40,18 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
         </div>
         <form className="space-y-4">
           {weightData.map((item, index) => (
-            <div className="flex flex-row" key={index}>
-              <div className="text-sm">{item.metric}</div>
+            <div className="flex flex-row items-center" key={index}>
+              <div className="font-normal text-sm line-clamp-2 w-[calc(100%-9em)]">
+                {item.metric}
+              </div>
               <div className="flex-grow"></div>
               <input
-                className="border px-2 py-1 rounded-md w-20 text-center  "
+                className="border px-2 py-1 rounded-md w-20 text-center text-sm font-normal"
                 type="number"
                 placeholder="..%"
                 min={0}
                 max={100}
-                value={item.value}
+                value={item.value !== 0 ? item.value : ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleChange(item.metric, Number(e.target.value))
                 }

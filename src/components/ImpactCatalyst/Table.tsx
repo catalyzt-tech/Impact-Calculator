@@ -72,18 +72,20 @@ const Table = ({ selectedProject, totalStats, weight }) => {
                     />
                     <div className="ml-3">
                       <div>{project['Meta: Project Name']}</div>
-                      <div className="text-xs opacity-50 font-light truncate max-w-20 md:max-w-32 lg:max-w-full">
+                      <div className="text-xs opacity-60 font-light truncate max-w-20 md:max-w-32 lg:max-w-full">
                         {project['Meta: Bio']}
                       </div>
                     </div>
                   </td>
-                  <td className=" py-2 ">{project['Result: # Ballots']}</td>
+                  <td className="py-2 font-normal">
+                    {project['Result: # Ballots']}
+                  </td>
                   {weight.map((item: WeightType, index: number) => (
-                    <td className=" py-2  " key={index}>
+                    <td className="py-2 font-normal" key={index}>
                       {new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
-                      }).format(Number(project[item.metric]))}
+                      }).format(Number((project[item.metric] as number) || 0))}
                     </td>
                   ))}
                   <td className="border-l border-b bg-red-50 ">

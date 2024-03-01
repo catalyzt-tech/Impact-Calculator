@@ -75,7 +75,7 @@ const ImpactCalculator: FC = () => {
             weight={weight}
           />
         </div>
-        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl bg-white">
+        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl bg-white w-full">
           <ImpactMetrices weightData={weight} setWeight={setWeight} />
         </div>
         <div className="col-span-4 border overflow-hidden rounded-xl bg-white">

@@ -1,14 +1,14 @@
 import { ChangeEvent, FC } from 'react'
-import { Project } from '../types/project'
+import { ProjectType } from '../types/project'
 
 interface SearchProps {
-  originData: Project[]
-  setData: (data: Project[]) => void
+  originData: ProjectType[]
+  setData: (data: ProjectType[]) => void
 }
 
 const Search: FC<SearchProps> = ({ originData, setData }) => {
   const handleSearch = (query: string) => {
-    const result = originData.filter((project: Project) => {
+    const result = originData.filter((project: ProjectType) => {
       return project['Meta: Project Name']
         .toLowerCase()
         .includes(query.toLowerCase())
@@ -18,14 +18,14 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
 
   return (
     <>
-      <div className="relative flex items-center my-20 ">
+      <div className="relative flex items-center my-10 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={1.5}
+          strokeWidth={1}
           stroke="currentColor"
-          className="absolute right-2 w-6 h-6"
+          className="absolute right-4 w-4 h-4"
         >
           <path
             strokeLinecap="round"
@@ -35,8 +35,8 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
         </svg>
         <input
           type="text"
-          placeholder="Search here"
-          className="input input-bordered w-[15rem] md:w-[25rem]"
+          placeholder="Search Project"
+          className="px-6 py-2 border w-72 border-slate-300 rounded-lg font-normal text-base md:w-[28rem]"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleSearch(e.target.value)
           }
