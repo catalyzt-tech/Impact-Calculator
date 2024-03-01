@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react'
-import { WeightType } from '../../types/ImpactMetric'
+import { WeightType } from '../../types/weight'
 
 interface ImpactMetricsProps {
   weightData: WeightType[]

@@ -1,4 +1,4 @@
-import { WeightType } from '../../types/ImpactMetric'
+import { WeightType } from '../../types/weight'
 // import { ProjectType } from '../../types/project'
 import { calculateAllocationTest } from '../../hooks/process'
 import { ProjectType } from '../../types/project'

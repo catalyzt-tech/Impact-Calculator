@@ -1,4 +1,4 @@
-import { WeightType } from '../types/ImpactMetric'
+import { WeightType } from '../types/weight'
 import { ProjectType } from '../types/project'
 import { StatsType } from '../types/stats'
 
