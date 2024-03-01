@@ -28,6 +28,7 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
 
   return (
     <div className="flex flex-col justify-center items-center mx-6">
+      <img src="img/small_sunny.svg" alt="pheonix" className=" w-16 mb-4" />
       <div className=" pb-8 px-4  w-full ">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics

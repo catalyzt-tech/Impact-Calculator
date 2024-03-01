@@ -36,13 +36,13 @@ const Navbar: FC = () => {
         </div>
         <Link to="/" className="ml-6 font-semibold text-xs  ">
           <div className="flex flex-row items-center">
-            <img src="img/catalyzt.svg" alt="catalyzt" className="w-36 mr-4" />
-            <div className="opacity-100 text-xl font-thin">| </div>
+            <img src="img/retropgfhub2.svg" alt="catalyzt" className="w-44" />
+            {/* <div className="opacity-100 text-xl font-thin">| </div>
             <img
               src="img/optimism_text_logo.svg"
               alt="op_logo"
               className="w-32 ml-4"
-            />
+            /> */}
           </div>
         </Link>
       </div>
