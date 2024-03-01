@@ -1,4 +1,4 @@
-export type Project = {
+export type ProjectType = {
     "Project ID": string;
     "Result: # Ballots": number;
     "Result: Median OP": number;
@@ -56,4 +56,5 @@ export type Project = {
     "GTP: VC Funding Amount": string;
     "GTP: Has Token": string;
     "GTP: Has VC Funding": number;
+    "Profile": string;
   };

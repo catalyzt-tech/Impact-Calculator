@@ -1,38 +1,33 @@
-import { FC, ChangeEvent } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
+import { WeightType } from '../../types/ImpactMetric'
 
 interface ImpactMetricsProps {
-  weightData: number[]
-  weightHandler: (weight: number[]) => void
+  weightData: WeightType[]
+  setWeight: React.Dispatch<React.SetStateAction<WeightType[]>>
 }
 
-const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, weightHandler }) => {
-  const Metric = [
-    'Total Contributors',
-    'Total Forks',
-    'Total Stars',
-    'Funding: Governance Fund',
-    'Funding: RPGF2',
-  ]
-
-  const handleChange = (index: number, value: number) => {
-    const newWeight = [...weightData]
-    newWeight[index] = value
-    const weightSum = newWeight.reduce((a, b) => a + b, 0)
-
-    const nextIndex = index === 4 ? 0 : index + 1
-
-    if (weightSum > 100) {
-      newWeight[nextIndex] -= weightSum - 100
-    } else {
-      newWeight[nextIndex] += 100 - weightSum
+const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
+  const [errors, setErrors] = useState<Record<string, boolean>>({})
+  const handleChange = (metric: string, value: number) => {
+    if (value < 0 || value > 100) {
+      setErrors((prevErrors) => ({ ...prevErrors, [metric]: true }))
+      return
     }
-
-    console.log(newWeight)
-    weightHandler(newWeight)
+    setErrors((prevErrors) => ({ ...prevErrors, [metric]: false }))
+    setWeight((prevWeight) => {
+      const updatedWeight = [...prevWeight]
+      const index = updatedWeight.findIndex((item) => item.metric === metric)
+      if (index !== -1) {
+        updatedWeight[index] = { ...updatedWeight[index], value: value }
+      }
+      return updatedWeight
+    })
   }
 
+  console.log(weightData)
+
   return (
-    <div className='flex flex-col justify-center items-center'>
+    <div className="flex flex-col justify-center items-center">
       <div className=" pb-8 px-8 w-fit">
         <div className="text-center font-semibold text-lg mb-10">
           Impact Metrics
@@ -44,9 +39,9 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, weightHandler }) =>
           <div className="mr-8"></div>
         </div>
         <form className="space-y-4">
-          {Metric.map((metric, index) => (
+          {weightData.map((item, index) => (
             <div className="flex flex-row" key={index}>
-              <div className="text-sm">{metric}</div>
+              <div className="text-sm">{item.metric}</div>
               <div className="flex-grow"></div>
               <input
                 className="border px-2 py-1 rounded-md w-20 text-center  "
@@ -54,11 +49,14 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, weightHandler }) =>
                 placeholder="..%"
                 min={0}
                 max={100}
-                value={weightData[index]}
+                value={item.value}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleChange(index, Number(e.target.value))
+                  handleChange(item.metric, Number(e.target.value))
                 }
               />
+              {errors[item.metric] && (
+                <div className="flex flex-col text-red-500">Invalid Input</div>
+              )}
               <div className="ml-4">%</div>
             </div>
           ))}

@@ -1,85 +1,44 @@
-import Highcharts from 'highcharts'
+import Highcharts, { format } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { calculateAllocationTest } from '../../hooks/process'
 
-const calculateProjectAllocation = (
-  project,
-  totalStats,
-  opAllocation,
-  weight
-) => {
-  const allocation = {
-    'Total Contributors':
-      totalStats['Total Contributors'] !== 0
-        ? Number(
-            (project['OSO: Total Contributors'] /
-              totalStats['Total Contributors']) *
-              weight[0]
-          )
-        : 0,
-    'Total Forks':
-      totalStats['Total Forks'] !== 0
-        ? Number(
-            (project['OSO: Total Forks'] / totalStats['Total Forks']) *
-              weight[1]
-          )
-        : 0,
-    'Total Stars':
-      totalStats['Total Stars'] !== 0
-        ? Number(
-            (project['OSO: Total Stars'] / totalStats['Total Stars']) *
-              weight[2]
-          )
-        : 0,
-    'Funding: Governance Fund':
-      totalStats['Funding: Governance Fund'] !== 0
-        ? Number(
-            (project['Funding: Partner Fund'] /
-              totalStats['Funding: Governance Fund']) *
-              weight[3]
-          )
-        : 0,
-    'Funding: RPGF2':
-      totalStats['Funding: RPGF2'] !== 0
-        ? Number(
-            (project['Funding: RPGF2'] / totalStats['Funding: RPGF2']) *
-              weight[4]
-          )
-        : 0,
-  }
-  const totalAllocation =
-    allocation['Total Contributors'] +
-    allocation['Total Forks'] +
-    allocation['Total Stars'] +
-    allocation['Funding: Governance Fund'] +
-    allocation['Funding: RPGF2']
-  return {
-    project: project['Meta: Project Name'],
-    amount: ((totalAllocation * opAllocation) / 100).toFixed(2),
-  }
+interface allocationResultType {
+  project: string
+  amount: string
 }
-
 const TempGraph = ({ selectedProject, totalStats, weight }) => {
   const [options, setOptions] = useState({})
-  const [allocationAmount, setAllocationAmount] = useState([])
-  const [projectName, setProjectName] = useState([])
+  const [allocationAmount, setAllocationAmount] = useState<number[]>([])
+  const [projectName, setProjectName] = useState<string[]>([])
+
+  console.log(
+    calculateAllocationTest(selectedProject, totalStats, 30000000, weight)
+  )
 
   const calculateAllocation = useCallback(async () => {
-    const opAllocation = 30000000
-    return selectedProject.map((project) =>
-      calculateProjectAllocation(project, totalStats, opAllocation, weight)
+    return calculateAllocationTest(
+      selectedProject,
+      totalStats,
+      30000000,
+      weight
     )
   }, [selectedProject, totalStats, weight]) // Include weight in dependencies
 
-  const transformData = useCallback((allocationResult) => {
-    const sortedAllocation = allocationResult
-      .sort((a, b) => Number(b.amount) - Number(a.amount))
-      .filter((project) => Number(project.amount) > 0)
-    const projectName = sortedAllocation.map((project) => project.project)
-    const amount = sortedAllocation.map((project) => Number(project.amount))
-    setAllocationAmount(amount)
-    setProjectName(projectName)
-  }, [])
+  const transformData = useCallback(
+    (allocationResult: allocationResultType[]) => {
+      const sortedAllocation = allocationResult
+        .sort((a, b) => Number(b.amount) - Number(a.amount))
+        .filter((project) => Number(project.amount) > 0)
+      const projectName = sortedAllocation.map((project) => project.project)
+      const amount = sortedAllocation.map((project) => Number(project.amount))
+      //console.log sum of  amonunt
+      console.log(amount.reduce((a, b) => a + b, 0))
+      setAllocationAmount(amount)
+      setProjectName(projectName)
+    },
+    []
+  )
 
   useEffect(() => {
     setOptions({
@@ -106,6 +65,11 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
         min: 0,
         title: {
           text: 'OP Allocation',
+          style: {
+            //font weight and size
+            fontWeight: 'bold',
+            fontSize: '14px',
+          },
         },
       },
       colors: ['#FF0000'],
@@ -117,16 +81,31 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       },
       tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat:
-          '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.2f} OP</b></td></tr>',
+
+        // pointFormat: `<tr><td style="color:{series.color};padding:0">{series.name}: </td>
+
+        //   <td style="padding:0"><b>{point.y:.2f}</b> <img src ="/static/op_logo.svg"/ style= "width:1.5em; display:inline">       </td>
+        //   {' '}</tr>`,
         footerFormat: '</table>',
+        formatter: function () {
+          return (
+            '<b style ="margin-bottom:10em;">' +
+            this.x +
+            '</b><br/><br/>' +
+            this.series.name +
+            ': ' +
+            this.y +
+            '<img src ="/static/op_logo.svg"/ style= "width:1.5em; display:inline; margin-right:1.5em; margin-left:0.5em"/>' +
+            '<br/>'
+          )
+        },
+
         shared: true,
         useHTML: true,
       },
       plotOptions: {
         column: {
-          pointPadding: 0,
+          pointPadding: 0.01,
           borderWidth: 0,
           groupPadding: 0,
           shadow: false,
@@ -135,7 +114,7 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       series: [
         {
           type: 'column',
-          name: 'Amount',
+          name: 'Allocation',
           data: allocationAmount,
         },
       ],
