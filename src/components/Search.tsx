@@ -17,7 +17,7 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
   }
 
   return (
-    <>
+    <div>
       <div className="relative flex items-center my-10 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
           }
         />
       </div>
-    </>
+    </div>
   )
 }
 
