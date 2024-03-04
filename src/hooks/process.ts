@@ -17,7 +17,7 @@ export const everyProjectStatSum = (projects: ProjectType[]) => {
 //Graph (Component) Hooks
 export const calculateAllocationTest = (
   projects: ProjectType[],
-  totalStats: StatsType,
+  totalStats: Partial<StatsType>[],
   opAllocation: number,
   weight: WeightType[]
 ) => {

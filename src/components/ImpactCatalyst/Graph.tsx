@@ -4,12 +4,21 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useCallback, useEffect, useState } from 'react'
 import { calculateAllocationTest } from '../../hooks/process'
+import { StatsType } from '../../types/stats'
+import { ProjectType } from '../../types/project'
+import { WeightType } from '../../types/weight'
+import { numberToString } from '../../hooks/format'
 
 interface allocationResultType {
   project: string
   amount: string
 }
-const TempGraph = ({ selectedProject, totalStats, weight }) => {
+interface GraphProp {
+  selectedProject: ProjectType[]
+  totalStats: StatsType[]
+  weight: WeightType[]
+}
+const TempGraph = ({ selectedProject, totalStats, weight }: GraphProp) => {
   const [options, setOptions] = useState<HighchartsReact.Props>({})
   const [allocationAmount, setAllocationAmount] = useState<number[]>([])
   const [projectName, setProjectName] = useState<string[]>([])
@@ -64,12 +73,18 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
         text: '',
       },
       xAxis: {
-        categories: projectName.map((name) =>
-          name.length > 12 ? name.substring(0, 12) + '...' : name
-        ),
+        categories: projectName,
         labels: {
           style: {
             fontSize: '10px',
+            textOverflow: 'ellipsis',
+            // whiteSpace: 'nowrap',
+            overflow: 'hidden',
+          },
+          formatter: function () {
+            return this.value.length > 12
+              ? this.value.substring(0, 12) + '...'
+              : this.value
           },
         },
         crosshair: true,
@@ -110,18 +125,22 @@ const TempGraph = ({ selectedProject, totalStats, weight }) => {
       },
       tooltip: {
         split: false,
+        padding: 15,
+        style: {
+          minWidth: '200px',
+        },
         formatter: function (this: Highcharts.TooltipFormatterContextObject) {
-          let s = '<b>' + this.x + '</b>'
+          let s = '<b>' + this.x + '</b> <br/>'
           this.points?.forEach(function (point: Highcharts.Point) {
             s +=
               '<br/>' +
               point.series?.name +
               ': ' +
-              point.y?.toFixed(2) +
+              numberToString(point.y || 0) +
               '<img src ="/static/op_logo.svg" style= "width:1.5em; display:inline; margin-right:1.5em; margin-left:0.5em"/>'
           })
 
-          return s
+          return s + '<br/>'
         },
         shared: true,
         useHTML: true,

@@ -2,9 +2,17 @@ import { WeightType } from '../../types/weight'
 // import { ProjectType } from '../../types/project'
 import { calculateAllocationTest } from '../../hooks/process'
 import { ProjectType } from '../../types/project'
-const Table = ({ selectedProject, totalStats, weight }) => {
+import { numberToString } from '../../hooks/format'
+import { StatsType } from '../../types/stats'
+
+interface TableProp {
+  selectedProject: ProjectType[]
+  totalStats: StatsType[]
+  weight: WeightType[]
+}
+const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
   const opAllocation = 30000000
-  console.log('table')
+
   console.log(selectedProject, totalStats, weight)
 
   const allocation = calculateAllocationTest(
@@ -14,10 +22,10 @@ const Table = ({ selectedProject, totalStats, weight }) => {
     weight
   )
 
-  console.log('allocation', allocation)
+  // console.log('allocation', allocation)
 
   return (
-    <>
+    <div>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
@@ -82,18 +90,18 @@ const Table = ({ selectedProject, totalStats, weight }) => {
                   </td>
                   {weight.map((item: WeightType, index: number) => (
                     <td className="py-2 font-normal" key={index}>
-                      {new Intl.NumberFormat('en-US', {
+                      {/* {new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
-                      }).format(Number((project[item.metric] as number) || 0))}
+                      }).format(Number((project[item.metric] as number) || 0))} */}
+                      {numberToString(
+                        Number((project[item.metric] as number) || 0)
+                      )}
                     </td>
                   ))}
                   <td className="border-l border-b bg-red-50 ">
                     <div className="w-full">
-                      {new Intl.NumberFormat('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(Number(allocation[index].amount))}
+                      {numberToString(Number(allocation[index].amount))}
                     </div>
                     {/* <div className="flex flex-row justify-end ml-2">
                       <svg
@@ -121,7 +129,7 @@ const Table = ({ selectedProject, totalStats, weight }) => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   )
 }
 export default Table
