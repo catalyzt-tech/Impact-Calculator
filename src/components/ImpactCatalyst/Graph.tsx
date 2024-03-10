@@ -8,7 +8,7 @@ import { StatsType } from '../../types/stats'
 import { ProjectType } from '../../types/project'
 import { WeightType } from '../../types/weight'
 import {
-  numberToString,
+  // numberToString,
   pieAllocation,
   pieChartOptions,
   columnChartOptions,

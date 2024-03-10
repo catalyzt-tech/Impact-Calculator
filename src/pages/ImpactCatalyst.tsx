@@ -67,7 +67,12 @@ const ImpactCalculator: FC = () => {
     fetchData()
   }, [selectedProject])
 
-  if (loading === true) return <div>Loading...</div>
+  if (loading === true)
+    return (
+      <div className="flex flex-row justify-center items-center text-xl font-medium h-[calc(100vh-10em)]">
+        Loading ...
+      </div>
+    )
 
   return (
     <div className=" px-10">
@@ -78,7 +83,11 @@ const ImpactCalculator: FC = () => {
             {graphType.map((item, index) => (
               <button
                 key={index}
-                className="px-4 py-2 mb-3 rounded-md bg-white border border-black text-black"
+                className={`${
+                  graphTypeSelected == item.value
+                    ? 'bg-[#ff0420] text-white '
+                    : 'text-[#ff0420]  bg-white '
+                } px-7 py-2  rounded-lg border border-[#ff0420] transition-all duration-300 ease-in-out`}
                 value={item.value}
                 onClick={() => setGraphTypeSelected(item.value)}
               >
@@ -86,6 +95,7 @@ const ImpactCalculator: FC = () => {
               </button>
             ))}
           </div>
+          <br />
           <Graph
             key={graphTypeSelected}
             selectedProject={osoData}

@@ -53,10 +53,41 @@ export const pieChartOptions = (allocationAmount: any) => {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+          // format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+          formatter: function () {
+            return (
+              '<b>' +
+              this.point.name +
+              '</b>: ' +
+              numberToString(Number(this.point.percentage)) +
+              '%'
+            )
+          },
         },
       },
     },
+    tooltip: {
+      // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+      useHTML: true,
+      shared: true,
+      padding: 15,
+      style: {
+        minWidth: '200px',
+      },
+      formatter: function (this: Highcharts.TooltipFormatterContextObject) {
+        return (
+          '<b>' +
+          this.point.name +
+          '</b> - ' +
+          numberToString(Number(this.point.percentage)) +
+          '%' +
+          '<br/><br/>Allocation: ' +
+          numberToString(this.point.y) +
+          '<img src ="/static/op_logo.svg" style= "width:1.5em; display:inline; margin-right:1.5em; margin-left:0.5em"/>'
+        )
+      },
+    },
+    // colors: ['#FF0000'],
     series: [
       {
         name: 'Amount',
@@ -132,6 +163,7 @@ export const columnChartOptions = (
     ],
 
     colors: ['#FF0000'],
+
     legend: {
       enabled: false,
     },
@@ -162,7 +194,7 @@ export const columnChartOptions = (
     },
     plotOptions: {
       column: {
-        pointPadding: 0.02,
+        pointPadding: 0.01,
         borderWidth: 0,
         groupPadding: 0,
         shadow: false,
