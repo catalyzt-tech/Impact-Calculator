@@ -15,6 +15,7 @@ const ImpactCalculator: FC = () => {
   const [loading, setLoading] = useState(true)
   const [totalStats, setTotalStats] = useState<StatsType>()
   const [osoData, setOsoData] = useState<ProjectType[]>([])
+  const [graphTypeSelected, setGraphTypeSelected] = useState('pie')
   const [weight, setWeight] = useState<WeightType[]>([
     {
       metric: 'OSO: Total Contributors',
@@ -37,6 +38,11 @@ const ImpactCalculator: FC = () => {
       value: 100,
     },
   ])
+
+  const graphType = [
+    { name: 'Pie Chart', value: 'pie' },
+    { name: 'Column Chart', value: 'column' },
+  ]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,17 +74,32 @@ const ImpactCalculator: FC = () => {
       <h1 className="text-center font-bold text-3xl py-8">Impact Calculator</h1>
       <div className="grid grid-cols-4 gap-3">
         <div className="col-span-3 border pt-10  overflow-hidden rounded-xl bg-white">
+          <div className="flex justify-center gap-x-6">
+            {graphType.map((item, index) => (
+              <button
+                key={index}
+                className="px-4 py-2 mb-3 rounded-md bg-white border border-black text-black"
+                value={item.value}
+                onClick={() => setGraphTypeSelected(item.value)}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
           <Graph
+            key={graphTypeSelected}
             selectedProject={osoData}
             totalStats={totalStats}
             weight={weight}
+            graphTypeSelected={graphTypeSelected}
           />
         </div>
-        <div className="flex flex-col justify-center border  overflow-hidden rounded-xl bg-white w-full">
+        <div className="flex flex-col justify-center py-5  border  overflow-hidden rounded-xl bg-white w-full">
           <ImpactMetrices weightData={weight} setWeight={setWeight} />
         </div>
         <div className="col-span-4 border overflow-hidden rounded-xl bg-white">
           <Table
+            key={osoData}
             selectedProject={osoData}
             totalStats={totalStats}
             weight={weight}
