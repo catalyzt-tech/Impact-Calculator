@@ -77,7 +77,7 @@ const ImpactCalculator: FC = () => {
   return (
     <div className=" px-10">
       <h1 className="text-center font-bold text-3xl py-8">Impact Calculator</h1>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-4 gap-3  ">
         <div className="col-span-3 border pt-10  overflow-hidden rounded-xl bg-white">
           <div className="flex justify-center gap-x-6">
             {graphType.map((item, index) => (

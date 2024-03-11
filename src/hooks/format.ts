@@ -58,7 +58,7 @@ export const pieChartOptions = (allocationAmount: any) => {
             return (
               '<b>' +
               this.point.name +
-              '</b>: ' +
+              '</b> - ' +
               numberToString(Number(this.point.percentage)) +
               '%'
             )
