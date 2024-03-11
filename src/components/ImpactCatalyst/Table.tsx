@@ -1,9 +1,11 @@
+'use client'
 import { WeightType } from '../../types/weight'
 // import { ProjectType } from '../../types/project'
 import { calculateAllocationTest } from '../../hooks/process'
 import { ProjectType } from '../../types/project'
 import { numberToString } from '../../hooks/format'
 import { StatsType } from '../../types/stats'
+import { useCallback, useEffect, useState } from 'react'
 
 interface TableProp {
   selectedProject: ProjectType[]
@@ -12,17 +14,35 @@ interface TableProp {
 }
 const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
   const opAllocation = 30000000
+  const [loading, setLoading] = useState(true)
+  const [allocation, setAllocation] = useState<any>([])
+  // console.log(selectedProject, totalStats, weight)
 
-  console.log(selectedProject, totalStats, weight)
+  const calculateAllocation = useCallback(async () => {
+    const result = await calculateAllocationTest(
+      selectedProject,
+      totalStats,
+      opAllocation,
+      weight
+    )
+    console.log('result', result)
+    return result
+  }, [selectedProject, totalStats, weight])
 
-  const allocation = calculateAllocationTest(
-    selectedProject,
-    totalStats,
-    opAllocation,
-    weight
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await calculateAllocation()
+      setAllocation(result)
+      setLoading(false)
+      console.log(result)
+    }
+    fetchData()
+  }, [calculateAllocation, selectedProject, totalStats, weight])
 
-  // console.log('allocation', allocation)
+  const sum = allocation.reduce((acc: number, item: any) => {
+    return acc + Number(item.amount)
+  }, 0)
+  // console.log('sum', sum)
 
   return (
     <div>
@@ -101,7 +121,15 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
                   ))}
                   <td className="border-l border-b bg-red-50 ">
                     <div className="w-full">
-                      {numberToString(Number(allocation[index].amount))}
+                      {loading
+                        ? 'Loading ...'
+                        : numberToString(
+                            Number(
+                              (allocation[index].amount * opAllocation) / sum ||
+                                0
+                            )
+                          )}
+                      {/* {console.log(allocation[index])} */}
                     </div>
                     {/* <div className="flex flex-row justify-end ml-2">
                       <svg

@@ -106,9 +106,8 @@ const TempGraph = ({
       const allocationResult = await calculateAllocation()
       transformData(allocationResult)
     }
-
     fetchData()
-  }, [calculateAllocation, transformData, graphTypeSelected])
+  }, [calculateAllocation, transformData, graphTypeSelected, weight])
 
   return (
     <div>

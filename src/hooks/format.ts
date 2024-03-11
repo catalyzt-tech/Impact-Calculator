@@ -9,8 +9,12 @@ export const pieAllocation = (allocationResult: any[]) => {
   const sortedAllocation = allocationResult
     .sort((a, b) => Number(b.amount) - Number(a.amount))
     .filter((project) => Number(project.amount) > 0)
+
+  const amount = sortedAllocation.map((project) => Number(project.amount))
+  const sum = amount.reduce((a, b) => a + b, 0)
+
   const transformedArray = sortedAllocation.map((item) => {
-    return { name: item.project, y: Number(item.amount) }
+    return { name: item.project, y: Number((item.amount / sum) * 30000000) }
   })
   return transformedArray
 }
