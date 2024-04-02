@@ -103,9 +103,9 @@ export const pieChartOptions = (allocationAmount: any) => {
 }
 
 export const columnChartOptions = (
-  allocationAmount: any,
-  projectName: any,
-  cumulative: any
+  allocationAmount: number,
+  projectName: string[],
+  cumulative: number[]
 ) => {
   return {
     chart: {
@@ -177,6 +177,8 @@ export const columnChartOptions = (
     tooltip: {
       split: false,
       padding: 15,
+      shared: true,
+      useHTML: true,
       style: {
         minWidth: '200px',
       },
@@ -193,8 +195,6 @@ export const columnChartOptions = (
 
         return s + '<br/>'
       },
-      shared: true,
-      useHTML: true,
     },
     plotOptions: {
       column: {
@@ -204,7 +204,12 @@ export const columnChartOptions = (
         shadow: false,
       },
       areaspline: {
-        fillOpacity: 0.05,
+        fillOpacity: 0.08,
+        lineWidth: 1,
+        marker: {
+          enabled: true,
+          radius: 2.5,
+        },
       },
       // series: { cumulative: true, pointStart: 0 },
     },

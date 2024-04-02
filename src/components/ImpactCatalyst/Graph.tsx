@@ -99,7 +99,7 @@ const TempGraph = ({
         columnChartOptions(allocationAmount, projectName, cumulative)
       )
     }
-  }, [allocationAmount, projectName, graphTypeSelected])
+  }, [allocationAmount, projectName, graphTypeSelected, cumulative])
 
   useEffect(() => {
     const fetchData = async () => {

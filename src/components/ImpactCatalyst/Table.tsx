@@ -98,9 +98,9 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
                       alt="project icon"
                       className="w-9 h-9 rounded-lg border border-white bg-white "
                     />
-                    <div className="ml-3">
+                    <div className="ml-3 ">
                       <div>{project['Meta: Project Name']}</div>
-                      <div className="text-xs opacity-60 font-light truncate max-w-20 md:max-w-32 lg:max-w-full">
+                      <div className="text-xs opacity-60 font-light truncate max-w-20 md:max-w-32 lg:max-w-44 text-wrap">
                         {project['Meta: Bio']}
                       </div>
                     </div>
