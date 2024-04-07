@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import Layout from './pages/Layout'
 import Category from './pages/Category'
 import Projects from './pages/Projects.tsx'
-import ImpactCatalyst from './pages/ImpactCatalyst'
+import ImpactCatalyst from './pages/Calculator.tsx'
 
 function App() {
   return (
