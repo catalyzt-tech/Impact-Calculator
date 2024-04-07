@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useState } from 'react'
 import { WeightType } from '../../types/weight'
+import MetricSelect from './ImpactMetrics/MetricSelector'
 
 interface ImpactMetricsProps {
   weightData: WeightType[]
@@ -64,9 +65,10 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
         </form>
       </div>
       <div className="text-center">
-        <button className="bg-[#ff0000] px-6 py-2 rounded-lg text-sm font-semibold border border-white text-white">
+        {/* <button className="bg-[#ff0000] px-6 py-2 rounded-lg text-sm font-semibold border border-white text-white">
           Select Metric Vectors
-        </button>
+        </button> */}
+        <MetricSelect />
       </div>
     </div>
   )
