@@ -4,7 +4,7 @@ import { FC } from 'react'
 const Home: FC = () => {
   return (
     <>
-      <div className="hero h-[calc(100vh-5rem)]">
+      <div className="hero h-[calc(100vh-11rem)]">
         <div className="hero-content flex-col lg:flex-row-reverse mx-40">
           <img src="img/sunny.svg" alt="pheonix" className="max-w-sm w-64" />
           <div>

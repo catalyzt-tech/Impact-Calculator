@@ -11,7 +11,7 @@ const Projects: FC = () => {
   const [displayData, setDisplayData] = useState<ProjectType[]>([])
   const [originData, setOriginData] = useState<ProjectType[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [Pagination, setPagination] = useState<number>(20)
+  const [Pagination, setPagination] = useState<number>(7)
   const [checkMark, setCheckMark] = useState<number>(0)
 
   // const shuffle = (array: Project[]) => {

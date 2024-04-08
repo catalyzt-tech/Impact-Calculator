@@ -4,18 +4,18 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const Navbar: FC = () => {
   return (
-    <div className="flex flex-row items-center justify-between bg-base-100 h-20 px-16">
+    <nav className="flex flex-row items-center justify-between bg-base-100 h-20 px-16">
       <div className="">
-        <Link to="/" className="flex flex-row  ml-6 font-semibold text-xs  ">
+        <Link to="/" className="flex flex-row font-semibold text-xs  ">
           <img src="img/retropgfhub2.svg" alt="catalyzt" className="w-40" />
         </Link>
       </div>
       <div className="hidden lg:flex">
-        <ul className="flex px-1 gap-x-6 buttom font-[450] opacity-60">
-          <li>
+        <ul className="flex px-1 buttom font-[450] opacity-60 ">
+          <li className="hover:bg-slate-200 px-4 py-1.5 rounded-lg transition ease-in-out duration-200 active:scale-90">
             <Link to="/">Home</Link>
           </li>
-          <li>
+          <li className="hover:bg-slate-200 px-4 py-1.5 rounded-lg transition ease-in-out duration-200 active:scale-90">
             <Link to="/category">Browse</Link>
           </li>
         </ul>
@@ -114,7 +114,12 @@ const Navbar: FC = () => {
                       className="border px-3.5 py-2 rounded-badge flex flex-row justify-center items-center gap-3 active:scale-95 transition ease-in-out duration-150"
                     >
                       {account.ensAvatar ? (
-                        <img src={account.ensAvatar} alt="avatar" />
+                        <img
+                          src={account.ensAvatar}
+                          alt="avatar"
+                          width={25}
+                          className="rounded-full"
+                        />
                       ) : (
                         <img
                           src="img/small_sunny.svg"
@@ -132,7 +137,7 @@ const Navbar: FC = () => {
           )
         }}
       </ConnectButton.Custom>
-    </div>
+    </nav>
   )
 }
 

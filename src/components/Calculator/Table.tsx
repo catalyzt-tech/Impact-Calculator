@@ -100,7 +100,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
                     />
                     <div className="ml-3 ">
                       <div>{project['Meta: Project Name']}</div>
-                      <div className="text-xs opacity-60 font-light truncate max-w-20 md:max-w-32 lg:max-w-44 text-wrap">
+                      <div className="text-xs opacity-60 font-light truncate  text-wrap">
                         {project['Meta: Bio']}
                       </div>
                     </div>
