@@ -79,7 +79,7 @@ const ImpactCalculator: FC = () => {
       <h1 className="text-center font-bold text-3xl py-8">Impact Calculator</h1>
       <div className="grid grid-cols-4 gap-3  ">
         <div className="col-span-3 border pt-10  overflow-hidden rounded-xl bg-white">
-          <div className="flex justify-center gap-x-6">
+          <div className="flex justify-center items-center gap-x-6">
             {graphType.map((item, index) => (
               <button
                 key={index}
@@ -94,7 +94,23 @@ const ImpactCalculator: FC = () => {
                 {item.name}
               </button>
             ))}
+            <div>Calculation Method</div>
+            <button className="flex justify-center items-center px-7 py-2  rounded-lg border  transition-all duration-300 ease-in-out">
+              Linear Weight
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M11 4h2v12l5.5-5.5l1.42 1.42L12 19.84l-7.92-7.92L5.5 10.5L11 16z"
+                />
+              </svg>
+            </button>
           </div>
+
           <br />
           <Graph
             key={graphTypeSelected}
