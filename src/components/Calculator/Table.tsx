@@ -25,7 +25,6 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
       opAllocation,
       weight
     )
-    console.log('result', result)
     return result
   }, [selectedProject, totalStats, weight])
 
@@ -34,7 +33,6 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
       const result = await calculateAllocation()
       setAllocation(result)
       setLoading(false)
-      console.log(result)
     }
     fetchData()
   }, [calculateAllocation, selectedProject, totalStats, weight])

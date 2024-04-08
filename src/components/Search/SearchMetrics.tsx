@@ -1,15 +1,15 @@
 import { ChangeEvent, FC } from 'react'
-import { ProjectType } from '../types/project'
+import { MetricsType } from '../../types/metrics'
 
 interface SearchProps {
-  originData: ProjectType[]
-  setData: (data: ProjectType[]) => void
+  originData: MetricsType[]
+  setData: (data: MetricsType[]) => void
 }
 
-const Search: FC<SearchProps> = ({ originData, setData }) => {
+const Search: FC<SearchProps> = ({originData, setData}) => {
   const handleSearch = (query: string) => {
-    const result = originData.filter((project: ProjectType) => {
-      return project['Meta: Project Name']
+    const result = originData.filter((metric: MetricsType) => {
+      return metric['metric']
         .toLowerCase()
         .includes(query.toLowerCase())
     })
@@ -35,8 +35,8 @@ const Search: FC<SearchProps> = ({ originData, setData }) => {
         </svg>
         <input
           type="text"
-          placeholder="Search Project"
-          className="px-6 py-2 border w-72 border-slate-300 rounded-lg font-normal text-base md:w-[28rem]"
+          placeholder="Search Metrics"
+          className="px-4 py-2 border w-full border-slate-300 rounded-lg font-normal text-base"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleSearch(e.target.value)
           }

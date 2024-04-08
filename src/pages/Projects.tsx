@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import Search from '../components/Search'
+import Search from '../components/Search/SearchProject'
 import { ProjectType } from '../types/project'
 
 const Projects: FC = () => {

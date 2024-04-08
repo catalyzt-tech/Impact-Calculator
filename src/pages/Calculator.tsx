@@ -29,14 +29,6 @@ const ImpactCalculator: FC = () => {
       metric: 'OSO: Total Stars',
       value: 100,
     },
-    {
-      metric: 'Funding: Governance Fund',
-      value: 100,
-    },
-    {
-      metric: 'Funding: RPGF2',
-      value: 100,
-    },
   ])
 
   const graphType = [

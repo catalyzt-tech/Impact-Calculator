@@ -65,10 +65,7 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
         </form>
       </div>
       <div className="text-center">
-        {/* <button className="bg-[#ff0000] px-6 py-2 rounded-lg text-sm font-semibold border border-white text-white">
-          Select Metric Vectors
-        </button> */}
-        <MetricSelect />
+        <MetricSelect weightData={weightData} setWeight={setWeight} />
       </div>
     </div>
   )

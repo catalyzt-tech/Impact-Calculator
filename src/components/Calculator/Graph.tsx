@@ -50,7 +50,6 @@ const TempGraph = ({
     (allocationResult: allocationResultType[]) => {
       if (graphTypeSelected === 'pie') {
         const transformedArray = pieAllocation(allocationResult)
-        console.log('transformedArray', transformedArray)
         setAllocationAmount(transformedArray)
       } else if (graphTypeSelected === 'column') {
         // const sortedAllocation = allocationResult
@@ -65,7 +64,6 @@ const TempGraph = ({
         // }
 
         const data = columnAllocation(allocationResult)
-        console.log('data', data)
         // const cumulative: number[] = amount.reduce<number[]>(
         //   (a, x, i) => [...a, x + (a[i - 1] || 0)],
         //   []
