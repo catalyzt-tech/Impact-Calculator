@@ -108,11 +108,11 @@ const MetricSelect: FC<MetricSelectorProps> = ({ weightData, setWeight }) => {
                             metric.isSelected
                               ? 'border-red-400 bg-red-50'
                               : 'border-gray-300 hover:bg-gray-50'
-                          }   rounded-xl p-4 transition ease-in-out duration-300  cursor-pointer `}
+                          }  rounded-xl p-4 transition ease-in-out duration-300  cursor-pointer `}
                           key={index}
                           onClick={() => handleSelect(metric)}
                         >
-                          <div>
+                          <div className="relative">
                             <div className="flex items-center">
                               <p className="text-md text-gray-900 pr-2">
                                 {metric.metric}
@@ -132,12 +132,33 @@ const MetricSelect: FC<MetricSelectorProps> = ({ weightData, setWeight }) => {
                                 />
                               </svg>
                             </div>
-                            <p className="text-sm text-gray-500 pt-2">
+                            <p className="text-sm text-gray-500 pt-2 pr-10 text-wrap">
                               {metric.desc}
                             </p>
+
                             <p className="text-sm text-gray-400 pt-2">
                               {metric.provider}
                             </p>
+                            <div
+                              className={` ${
+                                metric.isSelected
+                                  ? 'absolute visible'
+                                  : 'hidden'
+                              } right-2 top-[50%] transform translate-y-[-50%] transition duration-300 ease-in-out`}
+                            >
+                              <svg
+                                className="text-[#ff0420] inline-block "
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1.5em"
+                                height="1.5em"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="m10.6 16.6l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+                                />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       ))
@@ -147,7 +168,7 @@ const MetricSelect: FC<MetricSelectorProps> = ({ weightData, setWeight }) => {
                   <div className="mt-8">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-[#ff0420] px-4 py-2.5 text-sm w-full font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-[#ff0420] px-4 py-2.5 text-base w-full font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:scale-90 transition ease-in-out duration-150"
                       onClick={closeModal}
                     >
                       Done!

@@ -41,9 +41,9 @@ const ImpactCalculator: FC = () => {
     { name: 'Column Chart', value: 'column' },
   ]
   const calculateImpactMethod = [
-    'Linear Wieghted Average',
-    'Logarithmic Weighted Average',
-    'Percentile',
+    'Linear Weighted Average',
+    'Logarithmic Weighted Average (On Progress)',
+    'Percentile (On Progress)',
   ]
   useEffect(() => {
     const fetchData = async () => {

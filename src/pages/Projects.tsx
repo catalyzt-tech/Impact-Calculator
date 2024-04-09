@@ -12,7 +12,7 @@ const Projects: FC = () => {
   const [originData, setOriginData] = useState<ProjectType[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [Pagination, setPagination] = useState<number>(7)
-  const [checkMark, setCheckMark] = useState<number>(0)
+  // const [checkMark, setCheckMark] = useState<number>(0)
 
   // const shuffle = (array: Project[]) => {
   //   for (let i = array.length - 1; i > 0; i--) {
@@ -85,7 +85,6 @@ const Projects: FC = () => {
           <thead>
             <tr>
               <th>
-                {' '}
                 <input
                   type="checkbox"
                   className="checkbox checkbox-marked"

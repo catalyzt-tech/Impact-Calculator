@@ -83,7 +83,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
             {selectedProject.map((project: ProjectType, index: number) => {
               return (
                 <tr
-                  className="text-sm transition-all duration-300 ease-in-out"
+                  className="text-sm transition-all duration-300 ease-in-out even:bg-gray-50 hover:bg-gray-100"
                   key={project['Project ID']}
                 >
                   <td className="flex flex-row items-center border-r py-3 bg-yellow-50 font-semibold min-w-64">
@@ -98,7 +98,7 @@ const Table = ({ selectedProject, totalStats, weight }: TableProp) => {
                     />
                     <div className="ml-3 ">
                       <div>{project['Meta: Project Name']}</div>
-                      <div className="text-xs opacity-60 font-light truncate  text-wrap">
+                      <div className="text-xs opacity-60 font-light min-w-96 truncate text-wrap">
                         {project['Meta: Bio']}
                       </div>
                     </div>
