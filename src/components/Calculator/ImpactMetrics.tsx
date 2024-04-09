@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react'
 import { WeightType } from '../../types/weight'
 import MetricSelect from './ImpactMetrics/MetricSelector'
-
+import { metrics } from '../../data/metric'
 interface ImpactMetricsProps {
   weightData: WeightType[]
   setWeight: React.Dispatch<React.SetStateAction<WeightType[]>>
@@ -42,7 +42,12 @@ const ImpactMetrics: FC<ImpactMetricsProps> = ({ weightData, setWeight }) => {
           {weightData.map((item, index) => (
             <div className="flex flex-row items-center" key={index}>
               <div className="font-normal text-sm line-clamp-2 w-[calc(100%-9em)]">
-                {item.metric}
+                {metrics.map((each) => {
+                  if (each.id == item.metric) {
+                    return each.metric
+                  }
+                })}
+                {/* {item.metric} */}
               </div>
               <div className="flex-grow"></div>
               <input

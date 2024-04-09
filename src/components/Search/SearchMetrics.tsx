@@ -6,19 +6,17 @@ interface SearchProps {
   setData: (data: MetricsType[]) => void
 }
 
-const Search: FC<SearchProps> = ({originData, setData}) => {
+const Search: FC<SearchProps> = ({ originData, setData }) => {
   const handleSearch = (query: string) => {
     const result = originData.filter((metric: MetricsType) => {
-      return metric['metric']
-        .toLowerCase()
-        .includes(query.toLowerCase())
+      return metric['metric'].toLowerCase().includes(query.toLowerCase())
     })
     setData(result)
   }
 
   return (
     <div>
-      <div className="relative flex items-center my-10 ">
+      <div className="relative flex items-center my-6 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
