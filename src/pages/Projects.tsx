@@ -1,11 +1,31 @@
 import { FC, useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import Search from '../components/Search/SearchProject'
 import { ProjectType } from '../types/project'
+import { useNavigate } from "react-router-dom";
+
+function handleCategory(category:string) {
+  switch(category) {
+  case "op-stack":
+    return "OP Stack";
+  case "developer-ecosystem":
+    return "Developer Ecosystem";
+  case "collective-governance":
+    return "Collective Governance";
+  case "end-user-experience-and-adoption":
+    return "End User Experience and Adoption";
+  default:
+    return category;
+}
+
+}
 
 const Projects: FC = () => {
   const location = useLocation()
-  const selectedCategory: string = location.state?.category
+  let { slug } = useParams();
+  const selectedCategory: string = location.state?.category ? handleCategory(location.state?.category) : handleCategory(slug)
+
+  const navigate = useNavigate();
 
   const [selectedProject, setSelectedProject] = useState<ProjectType[]>([])
   const [displayData, setDisplayData] = useState<ProjectType[]>([])
@@ -13,7 +33,6 @@ const Projects: FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [Pagination, setPagination] = useState<number>(7)
   // const [checkMark, setCheckMark] = useState<number>(0)
-
   // const shuffle = (array: Project[]) => {
   //   for (let i = array.length - 1; i > 0; i--) {
   //     const j = Math.floor(Math.random() * (i + 1))
@@ -21,7 +40,6 @@ const Projects: FC = () => {
   //   }
   //   return array
   // }
-
   useEffect(() => {
     if (selectedCategory) {
       console.log('fetching displayData')
@@ -32,10 +50,15 @@ const Projects: FC = () => {
             (project: ProjectType) =>
               project[`Category: ${selectedCategory}`] == 1
           )
+          if(temp === undefined || temp.length === 0){
+            navigate("/category")
+            return
+          }
           setDisplayData(temp)
           setOriginData(temp)
           setLoading(false)
         })
+        .catch((err) => console.log(err))
     }
   }, [selectedCategory])
 
@@ -65,7 +88,7 @@ const Projects: FC = () => {
     setPagination(Pagination + 20)
   }
 
-  if (loading || !location.state?.category) {
+  if (loading) {
     return (
       <div className="flex flex-row justify-center items-center text-lg font-medium h-screen">
         Loading...

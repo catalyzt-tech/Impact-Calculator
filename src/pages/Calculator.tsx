@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, Fragment } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Graph from '../components/Calculator/Graph'
 import ImpactMetrices from '../components/Calculator/ImpactMetrics'
 import Table from '../components/Calculator/Table'
@@ -12,8 +12,8 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 const ImpactCalculator: FC = () => {
   const location = useLocation()
-  const selectedProject: ProjectType[] = location.state?.selectedProject
-
+  const navigate = useNavigate();
+  const selectedProject: ProjectType[] | undefined = location.state?.selectedProject
   const [loading, setLoading] = useState(true)
   const [selectedCalculateMethod, setSelectedCalculateMethod] = useState(
     'Linear Wieghted Average'
@@ -45,11 +45,15 @@ const ImpactCalculator: FC = () => {
     'Logarithmic Weighted Average (On Progress)',
     'Percentile (On Progress)',
   ]
+
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       const osoDataResponse = await fetch('/static/rpgf3_oso.json')
       const osoJson = await osoDataResponse.json()
-      const realSelectedProject = selectedProject.map(
+      const realSelectedProject = selectedProject!.map(
         (project: ProjectType) => {
           return osoJson.find((osoProject: ProjectType) => {
             return (
@@ -65,7 +69,12 @@ const ImpactCalculator: FC = () => {
       setTotalStats(updatedStatsSum as StatsType)
       setLoading(false)
     }
-    fetchData()
+    if(selectedProject === undefined || selectedProject.length === 0){
+      navigate("/category")
+    }
+    else {
+      fetchData()
+    }
   }, [selectedProject])
 
   if (loading === true)
