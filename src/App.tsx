@@ -13,9 +13,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="category" element={<Category />} />
-            <Route path="category/:slug" element={<Projects />} />
-            <Route path="impact" element={<ImpactCatalyst />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/category/:slug" element={<Projects />} />
+            <Route path="/impact" element={<ImpactCatalyst />} />
           </Route>
         </Routes>
       </BrowserRouter>
